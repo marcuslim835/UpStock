@@ -1,6 +1,7 @@
 # upstock
 
-## Project setup
+## Project Setup
+To install modules specified in package.json
 ```
 npm install
 ```
