@@ -1,4 +1,4 @@
-# upstock
+# UpStock
 
 ## Project Setup
 To install modules specified in package.json

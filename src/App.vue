@@ -1,6 +1,5 @@
 <template>
-  <h1> Test </h1>
-  
+  <router-view/>
 </template>
 
 <script>
@@ -16,5 +15,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.main { /* leftmost component following navbar should be class main */
+  margin-left: 200px; /* 200px for sidebar */
+  padding: 0px 10px;
 }
 </style>
