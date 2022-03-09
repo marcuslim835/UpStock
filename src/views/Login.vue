@@ -1,15 +1,16 @@
 <template>
-  <h1> Login </h1>
-  <router-link to="/home">Login</router-link> | 
-  <router-link to="/register">Register</router-link>
+  <LoginPage/>  
 </template>
 
 <script>
+import LoginPage from "@/components/LoginPage.vue"
 export default {
-    name:"Login"
+    name:"Login",
+    components:{
+      LoginPage
+    }
 }
 </script>
 
 <style scoped>
-
 </style>

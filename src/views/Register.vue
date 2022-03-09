@@ -1,14 +1,16 @@
 <template>
-  <h1> Register </h1>
-  <router-link to="/">Login Page</router-link>
+  <RegistrationPage/>  
 </template>
 
 <script>
+import RegistrationPage from "@/components/RegistrationPage.vue"
 export default {
-  name:"Register"
+    name:"Register",
+    components:{
+      RegistrationPage
+    }
 }
 </script>
 
 <style scoped>
-
 </style>
