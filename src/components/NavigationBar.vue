@@ -1,6 +1,5 @@
 <template>
     <div class="navBar">
-        <hr>
         <h2 id="username"> UserName </h2>
         <h3 id="email"> mrUserLongEmail@getAllAces.com </h3> <hr>
         <h3 id="email"> NET WORTH <span id="username"> $420,000 </span> </h3> <hr>
@@ -24,14 +23,14 @@
 <style scoped>
 .navBar {
   height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 200px; /* Set the width of the sidebar */
+  width: 300px; /* Set the width of the sidebar */
   position: fixed;
   z-index: 1; 
   top: 0;
   left: 0;
   background-color: #212529;
   overflow-x: hidden;
-  padding-top: 20px;
+  border-right: 1px solid white;
 }
 .navBar a {
   padding: 20px 20px 20px 20px;
