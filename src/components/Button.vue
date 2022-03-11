@@ -4,6 +4,8 @@
  
 <script>
 export default {
+    emits: ["bc"],
+
     props: {
         buttonText : String,
         greenButtonTheme: Boolean,
@@ -23,6 +25,7 @@ export default {
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        font-size: 18px;
     }
 
     .whitebg {
