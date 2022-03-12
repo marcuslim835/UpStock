@@ -2,6 +2,7 @@
   <Header content="Portfolio"/>
   <NavigationBar/>
   <Portfolio_Holdings/>
+  <Header content="Dividends"/>
   <Portfolio_Dividends/>
 </template>
 
