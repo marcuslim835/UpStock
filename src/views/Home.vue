@@ -4,7 +4,7 @@
   <Home_History/>
   <Home_OverallGraph/>
   <Home_PortfolioDiversity/>
-  <Portfolio_Holdings/>
+  <Home_PortfolioHoldings/>
   <News_Article/>
 </template>
 
@@ -14,7 +14,7 @@ import NavigationBar from "@/components/NavigationBar.vue"
 import Home_History from "@/components/Home_History.vue"
 import Home_OverallGraph from "@/components/Home_OverallGraph.vue"
 import Home_PortfolioDiversity from "@/components/Home_PortfolioDiversity.vue"
-import Portfolio_Holdings from "@/components/Portfolio_Holdings.vue"
+import Home_PortfolioHoldings from "@/components/Home_PortfolioHoldings.vue"
 import News_Article from "@/components/News_Article.vue"
 
 export default {
@@ -25,7 +25,7 @@ export default {
     Home_History,
     Home_OverallGraph,
     Home_PortfolioDiversity,
-    Portfolio_Holdings,
+    Home_PortfolioHoldings,
     News_Article
   }
 }
