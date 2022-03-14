@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import firebaseApp from "../firebaseAccessor.js";
+import firebaseApp from "../api/firebaseAccessor.js";
 import { getFirestore } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
