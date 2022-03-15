@@ -12,7 +12,7 @@
         <router-link to="/">Log Out</router-link> <hr>
         <h3 style=color:violet> Placeholder for future function </h3>
         <hr>
-        <img src="../assets/logo.png" alt = "Cool logo!" width = "160" height = "160">
+        <img src="../assets/logo.png" alt = "Cool logo!" width = "300" height = "300">
     </div>
 </template>
 
