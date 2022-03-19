@@ -8,6 +8,7 @@ import EditDetails from "@/views/EditDetails.vue"
 import PrivacySettings from "@/views/PrivacySettings.vue"
 import StockPage from "@/views/StockPage.vue";
 import StockSearch from "@/views/StockSearch.vue";
+import AddStock from "@/components/Overlay_ManageStock.vue";
 
 const routes = [
   {
@@ -54,7 +55,13 @@ const routes = [
     path: "/stockSearch",
     name: "StockSearch",
     component: StockSearch,
-  }
+  },
+
+  {
+    path: "/addStock",
+    name: "AddStock",
+    component: AddStock,
+  },
 ];
 
 const router = createRouter({
