@@ -18,7 +18,7 @@ export const getStockPrice = async (ticker) => { // can be used for multiple sto
         await axios.request(options).then((response) => {
             const data = response.data.quoteResponse.result;
             result = data.map(stock => ({
-                [stock.symbol]: stock.regularMarketPrice
+                [stock.symbol]: stock.regularMarketPrice.toFixed(2)
             }));
         });
         console.log(result);
