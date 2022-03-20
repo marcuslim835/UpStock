@@ -1,47 +1,64 @@
-<template v-for="item in articles" :key="item.author" >
-  <div class="main">
-    <h2 v-for="a in stuff" :key="a"> {{a}}Fake News Article</h2>
-    <h3>{{ item }}</h3>
-    <CCard style="width: 18rem">
-      <CCardImage orientation="top" src="../assets/logo.png" alt="logo" />
+<template>
+  <div class="main" id="help">
+    <CRow :xs="{ cols: 1, gutter: 4 }" :md="{ cols: 3}">
+    <CCard class="card" style="width: 18rem" v-for="(item, index) in articles" :key="index" >
+      <CCardImage orientation="top" v-bind:src="item.urlToImage" alt="News Article Image" />
       <CCardBody>
-        <CCardTitle>Card title</CCardTitle>
+        <CCardTitle>{{ item.title }}</CCardTitle>
+        <CCardSubtitle> 
+          <span v-if="item.author"> By {{ item.author }} </span> 
+          <span v-if="item.source.name"> From {{ item.source.name }} </span>
+        </CCardSubtitle>
         <CCardText>
-          Some quick example text to build on the card title and make up the bulk of the card's content.
+          <span v-html="item.description"></span>
         </CCardText>
-        <CCardLink href="#">Go to website</CCardLink >
+        <CButton component="a" v-bind:href="item.url" variant="outline"> Read more here </CButton>
       </CCardBody>
-      <CCardFooter> Date </CCardFooter>
+      <CCardFooter> {{ item.publishedAt }} </CCardFooter>
     </CCard>
+    </CRow>
   </div>
 </template>
 
 <script>
-import { CCard, CCardBody, CCardTitle, CCardText, CCardLink, CCardImage, CCardFooter } from "@coreui/vue";
+import { CRow, CCard, CCardBody, CCardTitle, CCardText, CButton, CCardImage, CCardFooter, CCardSubtitle } from "@coreui/vue";
 
 export default {
   components: {
+    CRow,
     CCard,
     CCardBody,
     CCardTitle,
     CCardText,
     CCardLink,
+    CButton,
     CCardImage,
-    CCardFooter
+    CCardFooter,
+    CCardSubtitle
   },
   props: ["articles"],
-  data() {
-    return {
-      stuff: [1,2,3]
-    };
-  },
   mounted() {
-
-    console.log("MOUNTING", this.articles);
+      console.log("MOUNTING in News_Article: ",this.articles);
   },
 };
 </script>
-
 <style scoped>
+div.card {
+  background-color:rgba(255, 255, 255, 0.05);
+  color:#868E96;
+}
+h5.card-title {
+  color:#F8F9FA;
+}
+a.btn {
+  background-color: #F8F9FA;
+  color: #868E96;
+}
+a.btn:hover {
+  background-color: #F8F9FA;
+  color: green;
+}
+</style>
 
+<style scoped src='@coreui/coreui/dist/css/coreui.min.css'>
 </style>

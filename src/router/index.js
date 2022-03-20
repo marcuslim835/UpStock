@@ -3,10 +3,12 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import News from "@/views/News.vue";
 import Portfolio from "@/views/Portfolio.vue";
-import Register from "@/views/Register.vue";
-import Settings from "@/views/Settings.vue";
+import AccountOverview from "@/views/AccountOverview.vue";
+import EditDetails from "@/views/EditDetails.vue"
+import PrivacySettings from "@/views/PrivacySettings.vue"
 import StockPage from "@/views/StockPage.vue";
 import StockSearch from "@/views/StockSearch.vue";
+import AddStock from "@/components/Overlay_ManageStock.vue";
 
 const routes = [
   {
@@ -20,11 +22,6 @@ const routes = [
     component: Home,
   },
   {
-    path: "/register",
-    name: "Register",
-    component: Register,
-  },
-  {
     path: "/news",
     name: "News",
     component: News,
@@ -35,9 +32,19 @@ const routes = [
     component: Portfolio,
   },
   {
-    path: "/settings",
-    name: "Settings",
-    component: Settings,
+    path: "/accountOverview",
+    name: "AccountOverview",
+    component: AccountOverview,
+  },
+  {
+    path: "/editDetails",
+    name: "EditDetails",
+    component: EditDetails,
+  },
+  {
+    path: "/privacySettings",
+    name: "PrivacySettings",
+    component: PrivacySettings,
   },
   {
     path: "/stockPage",
@@ -48,7 +55,13 @@ const routes = [
     path: "/stockSearch",
     name: "StockSearch",
     component: StockSearch,
-  }
+  },
+
+  {
+    path: "/addStock",
+    name: "AddStock",
+    component: AddStock,
+  },
 ];
 
 const router = createRouter({

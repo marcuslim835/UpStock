@@ -1,20 +1,24 @@
 <template>
-  <Header content="Stock Search"/>
+  <Header content="Edit Details"/>
   <NavigationBar/>
-  <SearchBar/>
+  <Settings_NavBar/>
+  <Details_Edit/>
 </template>
 
 <script>
 import Header from "@/components/Header.vue"
 import NavigationBar from "@/components/NavigationBar.vue"
-import SearchBar from "@/components/SearchBar.vue"
+import Settings_NavBar from "@/components/Settings_NavBar.vue"
+import Details_Edit from "@/components/Details_Edit.vue"
+
 
 export default {
-  name: 'StockSearch',
+  name: 'EditDetails',
   components:{
     Header,
     NavigationBar,
-    SearchBar
+    Settings_NavBar,
+    Details_Edit
   }
 }
 </script>
