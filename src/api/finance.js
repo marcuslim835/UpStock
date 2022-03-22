@@ -4,10 +4,10 @@ import axios from 'axios';
 export const getStockPrice = async (ticker) => { // can be used for multiple stocks
     const options = {
         method: 'GET',
-        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes',
+        url: 'https://yh-finance.p.rapidapi.com/market/v2/get-quotes',
         params: {symbols: ticker, region: 'US'},
         headers: {
-          'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
+          'x-rapidapi-host': 'yh-finance.p.rapidapi.com',
           'x-rapidapi-key': process.env.VUE_APP_FINANCE_API_KEY
         }
     };
@@ -34,7 +34,7 @@ export const getHistoricalStockPrice = async (ticker, range) => {
         url: 'https://yh-finance.p.rapidapi.com/stock/v3/get-chart',
         params: {interval: '1mo', symbol: ticker, range: range, region: 'US'},
         headers: {
-            'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
+            'x-rapidapi-host': 'yh-finance.p.rapidapi.com',
             'x-rapidapi-key': process.env.VUE_APP_FINANCE_API_KEY
         }
     };
@@ -82,10 +82,10 @@ export const getHistoricalPL = async (tickers, range) => {
 export const getDividendInformation = async (ticker) => { // only a single stock
     const options = {
         method: 'GET',
-        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary',
+        url: 'https://yh-finance.p.rapidapi.com/market/v2/get-summary',
         params: {symbol: ticker, region: 'US'},
         headers: {
-            'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
+            'x-rapidapi-host': 'yh-finance.p.rapidapi.com',
             'x-rapidapi-key': process.env.VUE_APP_FINANCE_API_KEY
         }
     };
