@@ -1,5 +1,4 @@
 <template>
-
   <div class="main" id="help">
     <CRow :xs="{ cols: 1, gutter: 4 }" :md="{ cols: 3}">
     <CCard class="card" style="width: 18rem" v-for="(item, index) in articles" :key="index" >
@@ -23,7 +22,6 @@
 
 <script>
 import { CRow, CCard, CCardBody, CCardTitle, CCardText, CButton, CCardImage, CCardFooter, CCardSubtitle } from "@coreui/vue";
-
 
 export default {
   components: {
