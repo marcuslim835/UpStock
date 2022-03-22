@@ -30,7 +30,6 @@ export default {
     CCardBody,
     CCardTitle,
     CCardText,
-    CCardLink,
     CButton,
     CCardImage,
     CCardFooter,
