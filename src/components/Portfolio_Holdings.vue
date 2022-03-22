@@ -10,7 +10,7 @@
                 <h3 id = 'totalPL' align="left">0</h3>
             </div>
             <div class="inline-div2">
-                <button id ='addInvestButton' type="button">+ Add investment</button>
+                <button id ='addInvestButton' type="button" @click="addInvestment()">+ Add investment</button>
             </div>
         </div>
         <div class = 'tableDiv'>
@@ -165,7 +165,7 @@ export default {
 
     methods : {
         addInvestment() {
-            console.log('redirect to add Investments overlay') //TODO
+            this.$router.push({name:'AddStock'}) //TODO
         }
     }
 }

@@ -21,7 +21,7 @@ export default {
 
 <style scoped>
     .baseButton {
-        padding: 20px 120px;
+        padding: 17px 120px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
