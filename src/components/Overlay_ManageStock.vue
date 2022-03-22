@@ -1,4 +1,5 @@
 <template>
+    <!-- overlay animate="zoom-in" :opened="opened" :visible="visible" @closed="opened = visible = false" -->
     <br>
     <h1> Add Stocks </h1>
     <p> Modify your stock holdings here! </p>
@@ -32,6 +33,7 @@
             <Button :greenButtonTheme="false" buttonText="Cancel" @bc="history.back()"/><br><br>
         </form>
     </div>
+    <!-- /overlay -->
 </template>
 
 <script>
