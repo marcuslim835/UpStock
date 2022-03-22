@@ -29,7 +29,7 @@ export default {
   methods: {
     async searchNews(query) {
       console.log(query);
-      var url =
+      const url =
         "https://newsapi.org/v2/everything?q=" +
         query +
         "&from=" +
