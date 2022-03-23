@@ -2,28 +2,15 @@
     <div class="main">
         <div class = 'pie-wrapper'>
         <h2> Portfolio diversity ring </h2>
-        <CChartDoughnut id = 'pieChart' style="width: 300px"
-            :data="{
-                labels: labelData,
-                datasets: [{
-                    backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16','#0F5EEC','#0FECDD','#ECE80F'],
-                    data: chartData
-                }],
-            }">
-        </CChartDoughnut>
         </div>
     </div>
 </template>
 
 <script>
 import { getAuth, onAuthStateChanged} from "firebase/auth";
-import { CChartDoughnut } from '@coreui/vue-chartjs'
 
 
 export default {
-    components: {
-        CChartDoughnut,
-    },
     mounted() {
         console.log('mounted');
         const auth = getAuth()

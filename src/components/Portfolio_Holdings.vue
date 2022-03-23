@@ -66,16 +66,13 @@ export default {
             var getMap = ST.getAllHoldings('userID') 
             getMap.then(x => {
                 for (const key of x.keys()) {
-                    console.log('first loop ' + key)
                     var ticker = key;
                     var stockName = x.get(ticker)[ST.NAME_POS] //stockName
                     var myMap = x.get(ticker)[ST.BROKERS_POS] //broker map
-                    console.log('the map is ' + myMap)
                     let data = API.getStockPrice(ticker); //returns a promise
                     data.then(x => {
                         let mktPrice = Object.values(x[0])[0];
                         for (const [brokerName, map] of Object.entries(myMap)) {
-                            console.log('second for loop ' + brokerName)
                             var row = table.insertRow(ind) 
                             ind += 1
                             var broker = brokerName
