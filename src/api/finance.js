@@ -19,7 +19,8 @@ export const getStockPrice = async (ticker) => { // can be used for multiple sto
             const data = response.data.quoteResponse.result;
             result = data.map(stock => ({
                 [stock.symbol]: stock.regularMarketPrice.toFixed(2)
-            }));
+            }))
+            ;
         });
         console.log(result);
         return result; // returns an array of objects
@@ -34,7 +35,7 @@ export const getHistoricalStockPrice = async (ticker, range) => {
         url: 'https://yh-finance.p.rapidapi.com/stock/v3/get-chart',
         params: {interval: '1mo', symbol: ticker, range: range, region: 'US'},
         headers: {
-            'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
+            'x-rapidapi-host': 'yh-finance.p.rapidapi.com',
             'x-rapidapi-key': process.env.VUE_APP_FINANCE_API_KEY
         }
     };

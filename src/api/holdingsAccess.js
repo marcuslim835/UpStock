@@ -21,7 +21,6 @@ export const getAllHoldings = async (userID) => {
         if (docSnap.exists()) {
             let dict =  docSnap.data()
             var keys= Object.keys(dict)
-
             const mapper = new Map();
             for (const ticker of keys) {
                 var stockName = dict[ticker]['name']
@@ -34,6 +33,7 @@ export const getAllHoldings = async (userID) => {
             return mapper 
         } else {
             console.log("Fail to load firebase");
+            return null
         }
     } catch (error) {
         console.error(error);
@@ -60,6 +60,33 @@ export const getHoldingsQty = async (userID) => {
             }
             //console.log(mapper)
             return mapper 
+        } else {
+            console.log("Fail to load firebase");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+//Obtain Agg price
+export const updateAggPrice = async (userID,ticker) => { 
+    try {
+        var docRef = doc(db, userID,"holdings") //userID as placeholder for curr.uid
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+            let dict =  docSnap.data()
+            let qty = 0
+            let sum = 0
+            let mapBroker = dict[ticker]['broker']
+            for (const map of Object.values(mapBroker)) {
+                console.log(map)
+                qty += (map[STOCK_QTY])
+                sum += (map[STOCK_PRICE]) * qty
+            }
+            let aggPrice = sum/qty
+            //update aggPrice in fb TODO
+            console.log(aggPrice.toFixed(2))
+            return aggPrice.toFixed(2) 
         } else {
             console.log("Fail to load firebase");
         }

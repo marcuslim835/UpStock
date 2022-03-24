@@ -62,16 +62,26 @@ export default {
             const curr = auth.currentUser;
             console.log('Current user id: ' + curr.uid) //user id
             var ind = 1
+            var count = 0;
             var table = document.getElementById('holdingTable')
             var getMap = ST.getAllHoldings('userID') 
             getMap.then(x => {
-                for (const key of x.keys()) {
-                    var ticker = key;
-                    var stockName = x.get(ticker)[ST.NAME_POS] //stockName
-                    var myMap = x.get(ticker)[ST.BROKERS_POS] //broker map
+                if (x == null) {
+                    console.log('Firebase is empty')
+                    alert('Nothing to load')
+                } else {
+                    console.log(x)
+                    for (const key of x.keys()) {
+                    let ticker = key;
+                    let stockName = x.get(ticker)[ST.NAME_POS] //stockName
+                    let myMap = x.get(ticker)[ST.BROKERS_POS] //broker map
+                    console.log(count + ' ' + myMap)
+                    count += 1
+                    console.log(ticker)
                     let data = API.getStockPrice(ticker); //returns a promise
-                    data.then(x => {
-                        let mktPrice = Object.values(x[0])[0];
+                    data.then(y => {
+                        let mktPrice = Object.values(y[0])[0];
+                        console.log('price for '+ ticker + ' is ' + mktPrice)
                         for (const [brokerName, map] of Object.entries(myMap)) {
                             var row = table.insertRow(ind) 
                             ind += 1
@@ -100,7 +110,7 @@ export default {
                             //Profit/Loss calculation
                             let mktTotal = quantity * mktPrice
                             let currentPL = quantity * (-parseFloat(price) + parseFloat(mktPrice))
-                            currentPL = currentPL.toFixed(1)
+                            currentPL = currentPL.toFixed(2)
                             if (currentPL < 0) {
                                 cell7.innerHTML = currentPL + ' USD'
                                 cell7.style.color = 'red'
@@ -113,6 +123,8 @@ export default {
                         }  
                     })
                 }
+                }
+                
             })
             document.getElementById('totalValue').innerHTML = vm.totalValue
             document.getElementById('totalPL').innerHTML = vm.totalPL
