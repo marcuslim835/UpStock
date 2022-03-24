@@ -7,7 +7,7 @@
         <router-link to="/news">News</router-link>
         <router-link to="/portfolio">Portfolio</router-link>
         <router-link to="/accountOverview">Settings</router-link>
-        <router-link to="/stockPage">Stock Page (For Testing)</router-link>
+        <router-link to="/stockPage">Stock Page (can remove)</router-link>
         <router-link to="/stockSearch">Stock Search</router-link>
         <button id = "btn" @click="signOut()" v-if="user">Log Out</button> <hr>
         <h3 style=color:violet> Placeholder for future function </h3>

@@ -1,5 +1,5 @@
 <template>
-  <Header content="Apple Stocks"/>
+  <Header :content='stockName + " Stocks"'/>
   <NavigationBar/>
   <Stock_Graph/>
   <Stock_KPI :price="price"/>
@@ -17,6 +17,7 @@ import * as API from '../api/finance.js';
 
 export default {
   name: 'StockPage',
+  props: ["stockTicker", "stockName"],
   components:{
     Header,
     NavigationBar,
@@ -28,8 +29,11 @@ export default {
     price: "",
   }),
   created() {
-    const data = API.getStockPrice("AAPL");
+    const data = API.getStockPrice(this.stockTicker);
     data.then(x => this.price = Object.values(x[0])[0]);
+  },
+  mounted() {
+    console.log("Date passed to StockPage: ", this.stockTicker, this.stockName);
   }
 }
 </script>
