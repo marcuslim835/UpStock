@@ -1,5 +1,4 @@
 <template>
-
   <div class="main" id="help">
     <CRow :xs="{ cols: 1, gutter: 4 }" :md="{ cols: 3}">
     <CCard class="card" style="width: 18rem" v-for="(item, index) in articles" :key="index" >
@@ -13,7 +12,7 @@
         <CCardText>
           <span v-html="item.description"></span>
         </CCardText>
-        <CButton component="a" v-bind:href="item.url" variant="outline"> Read more here </CButton>
+        <CCardLink v-bind:href="item.url" target="_blank"> Read more here... </CCardLink>
       </CCardBody>
       <CCardFooter> {{ item.publishedAt }} </CCardFooter>
     </CCard>
@@ -22,8 +21,7 @@
 </template>
 
 <script>
-import { CRow, CCard, CCardBody, CCardTitle, CCardText, CButton, CCardImage, CCardFooter, CCardSubtitle } from "@coreui/vue";
-
+import { CRow, CCard, CCardBody, CCardTitle, CCardText, CCardLink, CCardImage, CCardFooter, CCardSubtitle } from "@coreui/vue";
 
 export default {
   components: {
@@ -32,7 +30,7 @@ export default {
     CCardBody,
     CCardTitle,
     CCardText,
-    CButton,
+    CCardLink,
     CCardImage,
     CCardFooter,
     CCardSubtitle
@@ -48,16 +46,15 @@ div.card {
   background-color:rgba(255, 255, 255, 0.05);
   color:#868E96;
 }
-h5.card-title {
+h5.card-title, p.card-text {
   color:#F8F9FA;
 }
-a.btn {
-  background-color: #F8F9FA;
-  color: #868E96;
+a.card-link {
+  color: lightblue;
 }
-a.btn:hover {
-  background-color: #F8F9FA;
-  color: green;
+a.card-link:hover {
+  background-color: #868E96;
+  color: #F8F9FA;
 }
 </style>
 

@@ -28,12 +28,15 @@ export default {
   },
   methods: {
     async searchNews(query) {
-      console.log(query);
+      console.log("User Query is: ", query);
+      let maxHistory = new Date(Date.now() - (1000 * 3600 * 24 * 5));
+      console.log("Date searched till: ", maxHistory);
       var url =
         "https://newsapi.org/v2/everything?q=" +
         query +
         "&from=" +
-        "2022-03-10" +
+        maxHistory.getFullYear() + "-" + (maxHistory.getMonth() + 1) + "-" + maxHistory.getDate() +
+        //"2022-03-10" +
         "&sortBy=relevancy" +
         "&pageSize=50" +
         "&apiKey=" +

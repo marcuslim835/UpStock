@@ -3,11 +3,11 @@
         <div>
             <div class="inline-div">
                 <h2 align="left">Total Market Value</h2>
-                <h3 id = 'totalValue' align="left">0</h3>
+                <h3 id = 'totalValue' align="left">{{totalValue}} USD</h3>
             </div>
             <div class="inline-div">
                 <h2 align="left">Total Profit/Loss</h2>
-                <h3 id = 'totalPL' align="left">0</h3>
+                <h3 id = 'totalPL' align="left">{{totalPL}} USD</h3>
             </div>
             <div class="inline-div2">
                 <button id ='addInvestButton' type="button" @click="() => TogglePopup('buttonTrigger')">+ Add investment</button>
@@ -34,11 +34,9 @@
 </template>
 
 <script>
-import firebaseApp from '../api/firebaseAccessor.js'
-import {getFirestore} from 'firebase/firestore'
-import {collection, getDocs, doc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged} from "firebase/auth";
 import * as API from '../api/finance.js';
+import * as ST from '../api/holdingsAccess.js';
 import Popup from './Popup.vue'; 
 import { ref } from 'vue'
 import OMS from './Overlay_ManageStock.vue'
@@ -49,6 +47,8 @@ export default {
     data() {
         return {
             user : false,
+            totalValue: 0,
+            totalPL: 0
         }
     },
     mounted() {
@@ -58,35 +58,24 @@ export default {
             if (user) {
                 // User is signed in.
                 this.user = user
-                display()
+                displayTable()
             } else {
                 // No user is signed in.
             }
         });
-        
-        async function display() {
-            //TODO: initialise an array containing all the holding types, loop through 1by1, link with manageStocks
-            var holdingsType = ['Tech','stocks','empty']
-            holdingsType.forEach(accessHoldings);
-
-            async function accessHoldings(stockType) {
-                const auth = getAuth();
-                const curr = auth.currentUser;
-                console.log('Current user id: ' + curr.uid) //user id
-                var docRef = doc(db, 'userID',"holdings"); //userID as placeholder for curr.uid
-
-                let z = await getDocs(collection(docRef, stockType));
-                var ind = 1;
-            
-                z.forEach((docs) => {
-                    var table = document.getElementById('holdingTable')
-                    let yy = docs.data() //access firebase document
-                
-                    //access data stored in firebase
-                    var stockName = (yy.name) 
-                    var ticker = (docs.id) 
-                    var myMap = (yy.broker)
-                    console.log('retrieving data for ' + stockName)
+        var vm = this
+        async function displayTable() {
+            const auth = getAuth();
+            const curr = auth.currentUser;
+            console.log('Current user id: ' + curr.uid) //user id
+            var ind = 1
+            var table = document.getElementById('holdingTable')
+            var getMap = ST.getAllHoldings('userID') 
+            getMap.then(x => {
+                for (const key of x.keys()) {
+                    var ticker = key;
+                    var stockName = x.get(ticker)[ST.NAME_POS] //stockName
+                    var myMap = x.get(ticker)[ST.BROKERS_POS] //broker map
                     let data = API.getStockPrice(ticker); //returns a promise
                     data.then(x => {
                         let mktPrice = Object.values(x[0])[0];
@@ -94,8 +83,8 @@ export default {
                             var row = table.insertRow(ind) 
                             ind += 1
                             var broker = brokerName
-                            var quantity = (map['qty'])
-                            var price = (map['price'])
+                            var quantity = (map[ST.STOCK_QTY])
+                            var price = (map[ST.STOCK_PRICE])
 
                             var cell1 = row.insertCell(0); var cell2 = row.insertCell(1); 
                             var cell3 = row.insertCell(2); var cell4 = row.insertCell(3); 
@@ -126,37 +115,20 @@ export default {
                                 cell7.innerHTML = '+ ' + currentPL + ' USD'
                                 cell7.style.color = 'green'
                             }
-                            let val1 = parseInt(document.getElementById('totalValue').innerHTML) 
-                            let val2 = parseInt(document.getElementById('totalPL').innerHTML) 
-                            document.getElementById('totalValue').innerHTML = val1 + parseInt(mktTotal)
-                            document.getElementById('totalPL').innerHTML = val2 + parseInt(currentPL)              
+                            vm.totalValue += parseInt(mktTotal) 
+                            vm.totalPL += parseInt(currentPL)              
                         }  
-                    }) 
-                });  
+                    })
+                }
+            })
+            document.getElementById('totalValue').innerHTML = vm.totalValue
+            document.getElementById('totalPL').innerHTML = vm.totalPL
+            async function deleteinstrument2(x) {
+                alert('delete button pressed for ' + x)
             }
-        }
-        
-        async function deleteinstrument2(x) {
-            //sell instead of delete? (TODO)
-            alert('delete button pressed for ' + x)
-            /*
-            var x = ticker
-            alert('You are going to delete ' + x);
-            var docRef = doc(db, 'userID',"holdings");
-            await deleteDoc(doc(docRef,'stocks',x))
-            console.log('Document successfully deleted!', x);
-            let tb = document.getElementById('holdingTable')
-            while (tb.rows.length > 1) {
-                tb.deleteRow(1)
-            }
-            document.getElementById('totalValue').innerHTML = ""
-            document.getElementById('totalPL').innerHTML = ""
-            display()
-            */
         }
     },
 
-    
     beforeUnmount() {
         function reinitTable() {
             console.log('Reinitialise Table')
