@@ -41,7 +41,6 @@ import Popup from './Popup.vue';
 import { ref } from 'vue'
 import OMS from './Overlay_ManageStock.vue'
 
-const db = getFirestore(firebaseApp);
 
 export default {
     data() {
