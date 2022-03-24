@@ -10,7 +10,7 @@
                 <h3 id = 'totalPL' align="left">{{totalPL}} USD</h3>
             </div>
             <div class="inline-div2">
-                <button id ='addInvestButton' type="button" @click="addInvestment()">+ Add investment</button>
+                <button id ='addInvestButton' type="button" @click="() => TogglePopup('buttonTrigger')">+ Add investment</button>
             </div>
         </div>
         <div class = 'tableDiv'>
@@ -21,12 +21,15 @@
                 <th>Broker</th>
                 <th>Quantity</th>
                 <th>Unit Cost</th>
-                <th>Market Price</th>
+                <th>Market Price</th> 
                 <th>Profit/Loss</th>
                 <th>Sell</th>
             </tr>
         </table>
         </div>
+        <Popup v-if="popupTriggers.buttonTrigger">
+            <OMS :TogglePopup = "() => TogglePopup('buttonTrigger')"/>
+        </Popup>
     </div>
 </template>
 
@@ -34,7 +37,11 @@
 import { getAuth, onAuthStateChanged} from "firebase/auth";
 import * as API from '../api/finance.js';
 import * as ST from '../api/holdingsAccess.js';
+import Popup from './Popup.vue'; 
+import { ref } from 'vue'
+import OMS from './Overlay_ManageStock.vue'
 
+const db = getFirestore(firebaseApp);
 
 export default {
     data() {
@@ -135,11 +142,36 @@ export default {
         reinitTable()
     },
 
+    /*
     methods : {
         addInvestment() {
             this.$router.push({name:'AddStock'}) //TODO
+
         }
+    },
+    */
+
+    setup() {
+        const popupTriggers = ref({
+            buttonTrigger : false 
+        });
+
+        const TogglePopup = (trigger) => {
+            popupTriggers.value[trigger] = !popupTriggers.value[trigger]
+        }; 
+
+        return {
+            Popup,
+            popupTriggers,
+            TogglePopup
+        }
+    },
+
+    components: {
+        OMS,
+        Popup
     }
+
 }
 
 </script>
@@ -189,10 +221,12 @@ h2 {
     background: #F8F9FA;
     border: 1px solid rgba(134, 142, 150, 0.3);
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .bwt {
     background:rgb(228, 58, 58);
 }
+
 
 </style>
