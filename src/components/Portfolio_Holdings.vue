@@ -3,14 +3,14 @@
         <div>
             <div class="inline-div">
                 <h2 align="left">Total Market Value</h2>
-                <h3 id = 'totalValue' align="left">Value</h3>
+                <h3 id = 'totalValue' align="left">{{totalValue}} USD</h3>
             </div>
             <div class="inline-div">
                 <h2 align="left">Total Profit/Loss</h2>
-                <h3 id = 'totalPL' align="left">Value</h3>
+                <h3 id = 'totalPL' align="left">{{totalPL}} USD</h3>
             </div>
             <div class="inline-div2">
-                <button id ='addInvestButton' type="button"  >+ Add investment</button>
+                <button id ='addInvestButton' type="button" @click="() => TogglePopup('buttonTrigger')">+ Add investment</button>
             </div>
         </div>
         <div class = 'tableDiv'>
@@ -21,109 +21,125 @@
                 <th>Broker</th>
                 <th>Quantity</th>
                 <th>Unit Cost</th>
-                <th>Market Price</th>
+                <th>Market Price</th> 
                 <th>Profit/Loss</th>
-                <th>Delete</th>
+                <th>Sell</th>
             </tr>
         </table>
         </div>
+        <Popup v-if="popupTriggers.buttonTrigger">
+            <OMS :TogglePopup = "() => TogglePopup('buttonTrigger')"/>
+        </Popup>
     </div>
 </template>
 
 <script>
-import firebaseApp from '../api/firebaseAccessor.js'
-import {getFirestore} from 'firebase/firestore'
-import {collection, getDocs, doc, deleteDoc} from 'firebase/firestore';
-const db = getFirestore(firebaseApp);
+import { getAuth, onAuthStateChanged} from "firebase/auth";
+import * as API from '../api/finance.js';
+import * as ST from '../api/holdingsAccess.js';
+import Popup from './Popup.vue'; 
+import { ref } from 'vue'
+import OMS from './Overlay_ManageStock.vue'
 
-//authentication to obtain uniqueID (TODO)
-//import { getAuth } from "firebase/auth";
-//const auth = getAuth();
-//const user = auth.currentUser;
-//const uid = user.uid;
 
-//firebase - holdings collection -> uniqueid doc > stocks subcollection > stockname Doc
-const docRef = doc(db, "holdings", 'uniqueid');
 export default {
-    mounted() {
-        console.log('mounted');
-        async function display() {
-            let z = await getDocs(collection(docRef, "stocks"));
-            let ind = 1;
-            var totalValue = 0;
-            var tp = 0;
-            
-            
-            z.forEach((docs) => {
-                var table = document.getElementById('holdingTable')
-                let yy = docs.data() //access firebase document
-                var row = table.insertRow(ind)
-
-                //access data stored in firebase
-                var stockName = (yy.stockName)
-                var ticker = (yy.ticker)
-                var broker = (yy.broker)
-                var quantity = (yy.quantity)
-                var unitCost = (yy.unitCost)
-                
-                var cell1 = row.insertCell(0); var cell2 = row.insertCell(1); var cell3 = row.insertCell(2);
-                var cell4 = row.insertCell(3); var cell5 = row.insertCell(4); var cell6 = row.insertCell(5);
-                var cell7 = row.insertCell(6); var cell8 = row.insertCell(7);
-            
-                cell1.innerHTML = stockName, cell2.innerHTML = ticker, cell3.innerHTML = broker; cell4.innerHTML = quantity;
-                cell5.innerHTML =unitCost + ' USD';
-            
-                //creating delete button
-                var bu = document.createElement('button')
-                bu.className = 'bwt'
-                bu.id  = String(stockName)
-                bu.innerHTML = 'Delete'
-                bu.onclick = function() {
-                    deleteinstrument2(stockName)
-                }
-                cell8.appendChild(bu) //insert delete button 
-                accessAPI(); //access API (TODO)
-
-
-                async function accessAPI() {
-                    //fetch current market price from API (TODO)
-                    console.log('Fetch current market price for ' + stockName) 
-                    let mktPrice = 100; //TEMP PLACEHOLDER
-                    let currentPL = 0;
-                    cell6.innerHTML = mktPrice + ' USD'
-                    currentPL = quantity * (-parseFloat(unitCost) + parseFloat(mktPrice))
-                    currentPL = currentPL.toFixed(1)
-                    if (currentPL < 0) {
-                        cell7.innerHTML = currentPL + ' USD'
-                        cell7.style.color = 'red'
-                    } else {
-                        cell7.innerHTML = '+ ' + currentPL + ' USD'
-                        cell7.style.color = 'green'
-                    }
-                    tp = tp + parseFloat(currentPL)
-                    totalValue += Math.round(quantity * parseFloat(unitCost));     
-                }
-                console.log(ind)
-                ind += 1
-            })
-            document.getElementById('totalValue').innerHTML = totalValue + ' USD';
-            document.getElementById('totalPL').innerHTML = tp + ' USD';
-        }
-        display();
-        async function deleteinstrument2(stockName) {
-            var x = stockName
-            alert('You are going to delete ' + x);
-            await deleteDoc(doc(docRef,'stocks',x))
-            console.log('Document successfully deleted!', x);
-            let tb = document.getElementById('holdingTable')
-            while (tb.rows.length > 1) {
-                tb.deleteRow(1)
-            }
-            document.getElementById('totalValue').innerHTML = ""
-            document.getElementById('totalPL').innerHTML = ""
-            display()
+    data() {
+        return {
+            user : false,
+            totalValue: 0,
+            totalPL: 0
         }
     },
+    mounted() {
+        console.log('mounted');
+        const auth = getAuth()
+        onAuthStateChanged(auth, (user)  =>{
+            if (user) {
+                // User is signed in.
+                this.user = user
+                displayTable()
+            } else {
+                // No user is signed in.
+            }
+        });
+        var vm = this
+        async function displayTable() {
+            const auth = getAuth();
+            const curr = auth.currentUser;
+            console.log('Current user id: ' + curr.uid) //user id
+            var ind = 1
+            var count = 0;
+            var table = document.getElementById('holdingTable')
+            var getMap = ST.getAllHoldings('userID') 
+            getMap.then(x => {
+                if (x == null) {
+                    console.log('Firebase is empty')
+                    alert('Nothing to load')
+                } else {
+                    console.log(x)
+                    for (const key of x.keys()) {
+                    let ticker = key;
+                    let stockName = x.get(ticker)[ST.NAME_POS] //stockName
+                    let myMap = x.get(ticker)[ST.BROKERS_POS] //broker map
+                    console.log(count + ' ' + myMap)
+                    count += 1
+                    console.log(ticker)
+                    let data = API.getStockPrice(ticker); //returns a promise
+                    data.then(y => {
+                        let mktPrice = Object.values(y[0])[0];
+                        console.log('price for '+ ticker + ' is ' + mktPrice)
+                        for (const [brokerName, map] of Object.entries(myMap)) {
+                            var row = table.insertRow(ind) 
+                            ind += 1
+                            var broker = brokerName
+                            var quantity = (map[ST.STOCK_QTY])
+                            var price = (map[ST.STOCK_PRICE])
+
+                            var cell1 = row.insertCell(0); var cell2 = row.insertCell(1); 
+                            var cell3 = row.insertCell(2); var cell4 = row.insertCell(3); 
+                            var cell5 = row.insertCell(4); var cell6 = row.insertCell(5);
+                            var cell7 = row.insertCell(6); var cell8 = row.insertCell(7);
+                            cell1.innerHTML = stockName, cell2.innerHTML = ticker, cell3.innerHTML = broker; 
+                            cell4.innerHTML = quantity; cell5.innerHTML = price + ' USD';
+                            cell6.innerHTML = mktPrice + ' USD'
+
+                            //creating delete button
+                            var bu = document.createElement('button')
+                            bu.className = 'bwt'
+                            bu.id  = String(stockName)
+                            bu.innerHTML = 'Sell'
+                            bu.onclick = function() {
+                                deleteinstrument2(ticker)
+                            }
+                            cell8.appendChild(bu) //insert delete button 
+                        
+                            //Profit/Loss calculation
+                            let mktTotal = quantity * mktPrice
+                            let currentPL = quantity * (-parseFloat(price) + parseFloat(mktPrice))
+                            currentPL = currentPL.toFixed(2)
+                            if (currentPL < 0) {
+                                cell7.innerHTML = currentPL + ' USD'
+                                cell7.style.color = 'red'
+                            } else {
+                                cell7.innerHTML = '+ ' + currentPL + ' USD'
+                                cell7.style.color = 'green'
+                            }
+                            vm.totalValue += parseInt(mktTotal) 
+                            vm.totalPL += parseInt(currentPL)              
+                        }  
+                    })
+                }
+                }
+                
+            })
+            document.getElementById('totalValue').innerHTML = vm.totalValue
+            document.getElementById('totalPL').innerHTML = vm.totalPL
+            async function deleteinstrument2(x) {
+                alert('delete button pressed for ' + x)
+            }
+        }
+    },
+
     beforeUnmount() {
         function reinitTable() {
             console.log('Reinitialise Table')
@@ -131,16 +147,42 @@ export default {
             while (tb.rows.length > 1) {
                 tb.deleteRow(1)
             }
-
+            document.getElementById('totalValue').innerHTML = 0
+            document.getElementById('totalPL').innerHTML = 0
         }
         reinitTable()
     },
 
+    /*
     methods : {
         addInvestment() {
-            console.log('redirect to add Investments overlay') //TODO
+            this.$router.push({name:'AddStock'}) //TODO
+
         }
+    },
+    */
+
+    setup() {
+        const popupTriggers = ref({
+            buttonTrigger : false 
+        });
+
+        const TogglePopup = (trigger) => {
+            popupTriggers.value[trigger] = !popupTriggers.value[trigger]
+        }; 
+
+        return {
+            Popup,
+            popupTriggers,
+            TogglePopup
+        }
+    },
+
+    components: {
+        OMS,
+        Popup
     }
+
 }
 
 </script>
@@ -190,10 +232,12 @@ h2 {
     background: #F8F9FA;
     border: 1px solid rgba(134, 142, 150, 0.3);
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .bwt {
     background:rgb(228, 58, 58);
 }
+
 
 </style>

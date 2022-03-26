@@ -50,6 +50,7 @@ const routes = [
     path: "/stockPage",
     name: "StockPage",
     component: StockPage,
+    props: true,
   },
   {
     path: "/stockSearch",

@@ -19,7 +19,8 @@ export const getStockPrice = async (ticker) => { // can be used for multiple sto
             const data = response.data.quoteResponse.result;
             result = data.map(stock => ({
                 [stock.symbol]: stock.regularMarketPrice.toFixed(2)
-            }));
+            }))
+            ;
         });
         console.log(result);
         return result; // returns an array of objects
