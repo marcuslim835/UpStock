@@ -91,7 +91,7 @@ export default {
     */
 
     mounted() {
-        console.log('mounted');
+        console.log('mounted on Portfolio page');
         const auth = getAuth()
         onAuthStateChanged(auth, (user)  =>{
             if (user) {
@@ -109,32 +109,28 @@ export default {
             const curr = auth.currentUser;
             console.log('Current user id: ' + curr.uid) //user id
             var ind = 1
-            var count = 0;
-            var table = document.getElementById('holdingTable')
-            var getMap = ST.getAllHoldings('userID') 
+            const table = document.getElementById('holdingTable')
+            const getMap = ST.getAllHoldings('5ZptXRt2WPVSysxTPUksxOIxeCP2') 
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
                     alert('Nothing to load')
                 } else {
-                    console.log(x)
                     for (const key of x.keys()) {
                     let ticker = key;
                     let stockName = x.get(ticker)[ST.NAME_POS] //stockName
                     let myMap = x.get(ticker)[ST.BROKERS_POS] //broker map
-                    console.log(count + ' ' + myMap)
-                    count += 1
-                    console.log(ticker)
                     let data = API.getStockPrice(ticker); //returns a promise
                     data.then(y => {
                         let mktPrice = Object.values(y[0])[0];
                         console.log('price for '+ ticker + ' is ' + mktPrice)
                         for (const [brokerName, map] of Object.entries(myMap)) {
-                            var row = table.insertRow(ind) 
+                            var row = table.insertRow(ind)
+                            row.style.border = 'red'
                             ind += 1
-                            var broker = brokerName
-                            var quantity = (map[ST.STOCK_QTY])
-                            var price = (map[ST.STOCK_PRICE])
+                            let broker = brokerName
+                            let quantity = (map[ST.STOCK_QTY])
+                            let price = (map[ST.STOCK_PRICE])
 
                             var cell1 = row.insertCell(0); var cell2 = row.insertCell(1); 
                             var cell3 = row.insertCell(2); var cell4 = row.insertCell(3); 
@@ -144,18 +140,14 @@ export default {
                             cell4.innerHTML = quantity; cell5.innerHTML = price + ' USD';
                             cell6.innerHTML = mktPrice + ' USD'
 
-                            //creating delete button
+                            //creating sell button
                             var bu = document.createElement('button')
                             bu.className = 'bwt'
                             bu.id  = String(stockName)
                             bu.innerHTML = 'Sell'
+                            bu.style.background = 'red'
+                            bu.style.color = 'white'
                             bu.onclick = (stockName, ticker, broker, quantity, price, mktPrice) => toggleDel(stockName, ticker, broker, quantity, price, mktPrice)
-                            /*
-                            function() {
-                                deleteinstrument2(ticker)
-                            }
-                            */
-
                             cell8.appendChild(bu) //insert delete button 
                         
                             //Profit/Loss calculation
@@ -169,22 +161,16 @@ export default {
                                 cell7.innerHTML = '+ ' + currentPL + ' USD'
                                 cell7.style.color = 'green'
                             }
-                            vm.totalValue += parseInt(mktTotal) 
-                            vm.totalPL += parseInt(currentPL)    
+
+                            vm.totalValue += parseFloat(mktTotal)
+                            vm.totalPL += parseFloat(currentPL)            
+
                         }  
                     })
                 }
                 }
                 
             })
-            document.getElementById('totalValue').innerHTML = vm.totalValue
-            document.getElementById('totalPL').innerHTML = vm.totalPL
-            
-            /*
-            async function deleteinstrument2(x) {
-                alert('delete button pressed for ' + x)
-            }
-            */
         }
     },
 
@@ -235,26 +221,23 @@ export default {
 <style>
 #holdingTable {
     width: 100%;
-    height: 5px;  
+    height: 10px;  
     border: 1px solid white; 
     border-collapse: collapse;
+    font-size: 20px;
 }
 
-th,td {
+#holdingTable th {
+    background-color: gray;
+    border: 1px solid white;
     text-align: center;
-    font-size: 20px;
     padding: 10px;
 }
 
-th {
-    background-color: gray;
-}
-
-th,td {
+#holdingTable tr td {
     border: 1px solid white;
-    border-collapse: collapse;
+    padding: 10px;
 }
-
 
 .inline-div {
     width: 300px;
