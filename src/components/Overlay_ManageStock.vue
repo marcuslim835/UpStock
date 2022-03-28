@@ -25,12 +25,13 @@
                 <option value="finance"> Finance </option>
                 <option value="reit"> REIT </option>
                 <option value="tech"> Tech </option>
+                <option value="others"> OTHERS </option>
 
                 <!-- Can add more tags here -->
             </select><br><br>
 
             <Button :greenButtonTheme="true" buttonText="Confirm" @bc="saveToFirebase()"/><br><br>
-            <Button :greenButtonTheme="false" buttonText="Cancel" @bc="history.back()"/><br><br>
+            <Button :greenButtonTheme="false" buttonText="Cancel" @bc="toggleModal()"/><br><br>
         </form>
     </div>
     <!-- /overlay -->
@@ -42,9 +43,23 @@ import firebaseApp from "../api/firebaseAccessor.js";
 import {getFirestore } from "firebase/firestore";
 import {doc, setDoc} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth"
+//import * as ST from '../api/holdingsAccess.js';
 const db = getFirestore(firebaseApp);
 
 export default {
+    //props: ["toggleModal"],
+    
+    /*
+    setup(props, {emit}) {
+        const cancel = () => {
+            emit("cancel");
+        }
+        return {cancel};
+    },
+    */
+
+    emits: ["cancel"],
+
     components:{
         Button,
     },
@@ -89,9 +104,14 @@ export default {
                 console.error("Error adding document: ", error);
             }
 
-            this.$router.push({name : 'Home'});
-        }
-    }
+            this.$router.push({name : 'Portfolio'});
+        },
+
+        toggleModal() {
+            this.$emit("cancel")
+        },
+    },
+
 }
 
 
