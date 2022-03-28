@@ -80,9 +80,9 @@ export default {
 
     data() {
         return {
-            chartData : [0,0,0,0,0,0],
+            chartData : [0,0,0,0,0,0,0],
             labelData : ST.LABEL_TYPES,
-            backgroundColor: ['#F4F00F','#7FC920','#22B8CF','#8390F1','#845EF7','#EE83F1'],
+            backgroundColor: ['#F4F00F','#7FC920','#22B8CF','#8390F1','#845EF7','#EE83F1','#F5446C'],
             dataWatcher: [],
             hasData: false,
             holdingsCount : 0,
