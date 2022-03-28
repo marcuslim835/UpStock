@@ -5,6 +5,8 @@
         <div class = "details">
             <label for="region"> Region: </label>
             <input type = "text" id = "region" placeholder="Enter Region"> <br><br>
+            <label for="dob"> Date of Birth: </label>
+            <input type = "text" id = "dob" placeholder="DD/MM/YYYY"> <br><br>
             <div class = "save">
                     <button id = "savebutton" type="button" v-on:click="savetofs()"> Save </button>
                 </div>
@@ -23,15 +25,16 @@ export default {
     methods: {
         async savetofs(){
             var region = document.getElementById("region").value
+            var dob = document.getElementById("dob").value
             alert("Saving Details")
             try{
                 const auth = getAuth();
                 const curr = auth.currentUser;
                 const docRef = await setDoc(doc(db, curr.uid, "credentials"), {
-                    Region: region
+                    Region: region,
+                    Dob: dob
                 })
-                console.log(docRef);
-                document.getElementbyId('region').reset();
+                console.log(docRef)
             }
             catch(error){
                 console.error("Error updating details", error);
