@@ -9,8 +9,8 @@ export const TYPE_POS = 1;
 export const BROKERS_POS = 2;
 export const STOCK_QTY = 'qty';
 export const STOCK_PRICE = 'price';
-export const TYPE_MAP = {'Tech':0,'REIT':1,'Finance':2,'Energy':3,'Healthcare':4,'Industrials':5}
-export const LABEL_TYPES = ['Tech','REIT','Finance','Energy','Healthcare','Industrials']
+export const TYPE_MAP = {'Tech':0,'REIT':1,'Finance':2,'Energy':3,'Healthcare':4,'Industrials':5,'OTHERS':6}
+export const LABEL_TYPES = ['Tech','REIT','Finance','Energy','Healthcare','Industrials','OTHERS']
 
 /*Returns MAP {ticker: [stockName,type,mapBroker], . . . }
   where mapBroker = {brokerName : {price : x, qty : y}, . . .}
