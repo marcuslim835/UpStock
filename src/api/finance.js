@@ -83,10 +83,10 @@ export const getHistoricalPL = async (tickers, range) => {
 export const getDividendInformation = async (ticker) => { // only a single stock
     const options = {
         method: 'GET',
-        url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary',
+        url: 'https://yh-finance.p.rapidapi.com/market/v2/get-summary',
         params: {symbol: ticker, region: 'US'},
         headers: {
-            'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
+            'x-rapidapi-host': 'yh-finance.p.rapidapi.com',
             'x-rapidapi-key': process.env.VUE_APP_FINANCE_API_KEY
         }
     };

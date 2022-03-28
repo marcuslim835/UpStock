@@ -57,7 +57,6 @@ const routes = [
     name: "StockSearch",
     component: StockSearch,
   },
-
   {
     path: "/addStock",
     name: "AddStock",
