@@ -10,7 +10,7 @@
                 <h3 id = 'totalPL' align="left">{{totalPL}} USD</h3>
             </div>
             <div class="inline-div2">
-                <button id ='addInvestButton' type="button" @click="() => TogglePopup('buttonTrigger')">+ Add investment</button>
+                <button id ='addInvestButton' type="button" @click="toggleModal()">+ Add investment</button>
             </div>
         </div>
         <div class = 'tableDiv'>
@@ -27,9 +27,13 @@
             </tr>
         </table>
         </div>
-        <Popup v-if="popupTriggers.buttonTrigger">
-            <OMS :TogglePopup = "() => TogglePopup('buttonTrigger')"/>
-        </Popup>
+        <Modal :modalActive="modalActive">
+            <OMS @cancel="() => toggleModal()"/>
+        </Modal>
+
+        <Modal :modalActive="delModalActive">
+            <ODE @deleteEntry = "document" :sellData="sellData" @cancel="() => toggleDelModal()"/>
+        </Modal>
     </div>
 </template>
 
@@ -37,19 +41,55 @@
 import { getAuth, onAuthStateChanged} from "firebase/auth";
 import * as API from '../api/finance.js';
 import * as ST from '../api/holdingsAccess.js';
-import Popup from './Popup.vue'; 
-import { ref } from 'vue'
+import Modal from './Modal.vue'; 
+//import { ref } from 'vue'
 import OMS from './Overlay_ManageStock.vue'
-
+import ODE from './Overlay_DeleteEntry.vue'
 
 export default {
     data() {
         return {
             user : false,
             totalValue: 0,
-            totalPL: 0
+            totalPL: 0,
+
+            modalActive: false,
+            delModalActive: false,
+            sellData: "",
+
         }
     },
+
+    components: {
+        OMS,
+        Modal,
+        ODE,
+    },
+
+    /*
+    setup() {
+        const modalActive = ref(false);  // For Adding Investment
+        const delModalActive = ref(false); // For Deleting Investment
+        console.log("SETUPPP")
+
+
+        const toggleModal = () => {
+            modalActive.value = !modalActive.value;
+            //console.log("BUTTON TRIGGERED: ", modalActive.value)
+        }; 
+        const toggleDelModal = () => {
+            delModalActive.value = !delModalActive.value;
+        };
+
+        return {
+            modalActive,
+            toggleModal,
+            delModalActive,
+            toggleDelModal
+        };
+    },
+    */
+
     mounted() {
         console.log('mounted on Portfolio page');
         const auth = getAuth()
@@ -62,6 +102,7 @@ export default {
                 // No user is signed in.
             }
         });
+        const toggleDel = (stockName, ticker, broker, quantity, price, mktPrice) => this.toggleDelModal(stockName, ticker, broker, quantity, price, mktPrice)
         var vm = this
         async function displayTable() {
             const auth = getAuth();
@@ -106,10 +147,8 @@ export default {
                             bu.innerHTML = 'Sell'
                             bu.style.background = 'red'
                             bu.style.color = 'white'
-                            bu.onclick = function() {
-                                SellTicker(ticker,broker)
-                            }
-                            cell8.appendChild(bu)  
+                            bu.onclick = (stockName, ticker, broker, quantity, price, mktPrice) => toggleDel(stockName, ticker, broker, quantity, price, mktPrice)
+                            cell8.appendChild(bu) //insert delete button 
                         
                             //Profit/Loss calculation
                             let mktTotal = quantity * mktPrice
@@ -122,17 +161,16 @@ export default {
                                 cell7.innerHTML = '+ ' + currentPL + ' USD'
                                 cell7.style.color = 'green'
                             }
+
                             vm.totalValue += parseFloat(mktTotal)
                             vm.totalPL += parseFloat(currentPL)            
+
                         }  
                     })
                 }
                 }
                 
             })
-        }
-        async function SellTicker(x,brokerType) {
-            alert('Sell button pressed for ' + x + ' for broker ' + brokerType)
         }
     },
 
@@ -149,35 +187,32 @@ export default {
         reinitTable()
     },
 
-    /*
+    
     methods : {
+        /*
         addInvestment() {
             this.$router.push({name:'AddStock'}) //TODO
 
         }
-    },
-    */
+        */
 
-    setup() {
-        const popupTriggers = ref({
-            buttonTrigger : false 
-        });
+        toggleModal() {
+            this.modalActive = !this.modalActive;
+        },
+        
+        toggleDelModal() {
+            this.delModalActive = !this.delModalActive;
+            arguments
+            this.sellData = {stockName:arguments[0], ticker:arguments[1], broker:arguments[2], quantity:arguments[3], price:arguments[4], mktPrice:arguments[5]}
+            console.log(arguments)
+        },
 
-        const TogglePopup = (trigger) => {
-            popupTriggers.value[trigger] = !popupTriggers.value[trigger]
-        }; 
+        deleteEntry() {
 
-        return {
-            Popup,
-            popupTriggers,
-            TogglePopup
         }
-    },
 
-    components: {
-        OMS,
-        Popup
-    }
+    },
+    
 
 }
 
