@@ -220,8 +220,8 @@ export default {
 
 <style>
 #holdingTable {
-    width: 100%;
-    height: 10px;  
+    width: 100%;  
+    height:10px;
     border: 1px solid white; 
     border-collapse: collapse;
     font-size: 20px;
