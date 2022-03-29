@@ -50,7 +50,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import * as ST from '../api/holdingsAccess.js';
 import * as API from '../api/finance.js';
 import {CChart} from '@coreui/vue-chartjs'
-import Popup from './Popup.vue'; 
+import Popup from './Modal.vue'; 
 import { ref } from 'vue'
 import OMS from './Overlay_ManageStock.vue'
 
