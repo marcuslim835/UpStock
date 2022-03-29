@@ -1,5 +1,5 @@
 import firebaseApp from './firebaseAccessor.js'
-import {getFirestore} from 'firebase/firestore'
+import {deleteField, getFirestore, setDoc, updateDoc} from 'firebase/firestore'
 import { getDoc, doc } from 'firebase/firestore';
 const db = getFirestore(firebaseApp);
 
@@ -23,6 +23,9 @@ export const getAllHoldings = async (userID) => {
             const dict =  docSnap.data()
             const keys= Object.keys(dict)
             const mapper = new Map();
+            console.log("FROM HOLDINGSACCESS: ",keys)
+            console.log("FROM HOLDINGSACCESS: ",dict)
+
             for (const ticker of keys) {
                 let stockName = dict[ticker]['name']
                 let mapBroker = dict[ticker]['broker']
@@ -132,20 +135,50 @@ export const updateAggPrice = async (userID,ticker) => {
     }
 }
 
-/*
-export const addHoldings = async(userID) => {
+export const addData = async (userID, ticker, stockName, brokerName, price, quantity, tag) => {
     try {
-        var docRef = doc(db, userID,"holdings") //userID as placeholder for curr.uid
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
-            const dict =  docSnap.data()
-            dict['JPM'] = {broker : { 'UOB' :{price:121,qty:10}}, name: 'JP Morgan', type: 'Finance'}
-            setDoc(docRef,dict)
+        const docRef = doc(db, String(userID), "holdings");
+        const docSnapshot = await getDoc(docRef);
+        if (!docSnapshot.exists()) {
+            const nDoc = await setDoc(docRef, {[ticker]: {broker: /*new Map([brokerName, {qty: quantity, price: price}])*/{[brokerName]: {qty: quantity, price: price}}, name: stockName, type: tag}});
+            console.log("ADD DATA OF STOCK/INVESTMENT IF DUN EXIST: ", nDoc);
+        } else {
+            const dict = docSnapshot.data();
+            console.log(dict);
+           
+            console.log("ADD DATA (IN DICT): ", ticker in dict);
+            if (ticker in dict) {
+                const currBrokers = dict[ticker]["broker"];
+
+                let nBrokerObj = {};
+                nBrokerObj[brokerName] = {qty: quantity, price: price};
+                for (let [key,value] of Object.entries(currBrokers)) {
+                    nBrokerObj[key] = value;
+                    console.log("INSIDE ADDDATA COPY LOOP: ", nBrokerObj);
+                }
+                
+                const updatedData = {broker: nBrokerObj, name: stockName, type: tag};
+                console.log(updatedData);
+
+                // Delete current outdated data from firebase
+                await updateDoc(docRef, {"AAPL" : deleteField()});
+                // Add back updated data
+                dict[ticker] = updatedData;
+                
+            } else {
+                dict[ticker] = {broker: {[brokerName]: {qty: quantity, price: price}}, name: stockName, type: tag};  
+            }
+    
+            await setDoc(docRef, dict)
+            
         }
-    } catch (error) {
+        
+    }
+    catch (error) {
+        console.log("ERRORRRRRRRR")
         console.error(error);
     }
 }
-*/
+
 
 
