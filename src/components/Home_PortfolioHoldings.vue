@@ -9,7 +9,7 @@
                     <h2 id = 'countHeader' align="left">Number of Holdings: {{holdingsCount}}</h2>
                 </div>
                 <div class = 'top'>     
-                    <button id ='addInvestButton' type="button" @click="() => TogglePopup('buttonTrigger')">
+                    <button id ='addInvestButton' type="button" @click="() => toggleModal()">
                         <b>+ Add investment</b></button>
                 </div>
             </div>
@@ -24,9 +24,9 @@
                 <th></th>
             </tr>
         </table>
-        <Popup v-if="popupTriggers.buttonTrigger">
-            <OMS :TogglePopup = "() => TogglePopup('buttonTrigger')"/>
-        </Popup>
+        <Modal :modalActive="modalActive">
+            <OMS @cancel="() => toggleModal()"/>
+        </Modal>
         </div>
         <div class = 'sect' id = 'pie'>
         <h2 id = 'pieHeader'> Portfolio Diversity</h2>
@@ -50,31 +50,14 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import * as ST from '../api/holdingsAccess.js';
 import * as API from '../api/finance.js';
 import {CChart} from '@coreui/vue-chartjs'
-import Popup from './Modal.vue'; 
-import { ref } from 'vue'
+import Modal from './Modal.vue'; 
 import OMS from './Overlay_ManageStock.vue'
 
 
 export default {
-    setup() {
-        const popupTriggers = ref({
-            buttonTrigger : false 
-        });
-
-        const TogglePopup = (trigger) => {
-            popupTriggers.value[trigger] = !popupTriggers.value[trigger]
-        }; 
-
-        return {
-            Popup,
-            popupTriggers,
-            TogglePopup
-        }
-    },
-
     components: {
         OMS,
-        Popup,
+        Modal,
         CChart
     },
 
@@ -86,6 +69,7 @@ export default {
             dataWatcher: [],
             hasData: false,
             holdingsCount : 0,
+            modalActive : false,
         }
     },
 
@@ -197,6 +181,14 @@ export default {
             }
         }
         reinitTable()
+    },
+
+    methods : {
+
+        toggleModal() {
+            this.modalActive = !this.modalActive;
+        },
+
     },
        
 }   
