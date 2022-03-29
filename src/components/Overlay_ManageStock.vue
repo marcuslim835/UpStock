@@ -99,7 +99,7 @@ export default {
                 const auth = getAuth();
                 const currUser = auth.currentUser;
                 
-                ST.addData(currUser.uid, ticker, stockName, brokerName, price, qty, tag)
+                await ST.addData(currUser.uid, ticker, stockName, brokerName, price, qty, tag)
                 console.log("AFTER ADD DATA")
 
                 /*

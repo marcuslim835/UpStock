@@ -101,7 +101,7 @@ export default {
             console.log('Current user id: ' + curr.uid) //user id
             var ind = 1 //row index
             const table = document.getElementById('homeHoldingTable')
-            const getMap = ST.getAllHoldings('userID') 
+            const getMap = ST.getAllHoldings(curr.uid) 
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
@@ -125,7 +125,7 @@ export default {
                             let sum = 0 //for aggregating the price
                             for (const map of Object.values(mapBroker)) {
                                 let qty = (map[ST.STOCK_QTY])
-                                tickerQty += qty
+                                tickerQty += parseInt(qty)
                                 sum += (map[ST.STOCK_PRICE]) * qty
                             }
                             let totalWorth = (tickerQty * mktPrice) 
@@ -148,9 +148,10 @@ export default {
                             //Profit/Loss calculation
                             let aggPrice = (sum/tickerQty).toFixed(2) //total sum bought/total qty of ticker
                             let currentPL = (-parseFloat(aggPrice) + parseFloat(mktPrice))
+                            console.log(currentPL + ' ' + ticker)
                             let percentC = (parseFloat(Math.abs(currentPL)/aggPrice) * 100).toFixed(2)
-                            if (percentC < 0) {
-                                pcCell.innerHTML = percentC + ' %' 
+                            if (currentPL < 0) {
+                                pcCell.innerHTML = '- ' + percentC + ' % <br><br>' 
                                 pcCell.style.color = 'red'
                             } else {
                                 pcCell.innerHTML = '+ ' + percentC + ' % <br><br>' 
