@@ -9,6 +9,7 @@
                     Provider: <strong>{{user.providerData[0].providerId}}</strong> </p>
             </div>
             Region: <div id = "region" v-if="user"> Region </div>
+            Date of Birth: <div id = "dob" v-if="user"> Dob </div>
         </div>
     </div>
 </template>
@@ -17,7 +18,7 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import firebaseApp from "../api/firebaseAccessor.js";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
@@ -33,12 +34,12 @@ export default {
         async function display(){
             const auth = getAuth();
             const curr = auth.currentUser;
-            let z = await getDocs(collection(db,curr.uid))
-            z.forEach((docs) => {
-                let data = docs.data()
-                var region = data.Region
-                document.getElementById("region").innerHTML = region
-            })
+            const docRef = doc(db, curr.uid, "credentials");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()){
+                document.getElementById("region").innerHTML = docSnap.data()["Region"]
+                document.getElementById("dob").innerHTML = docSnap.data()["Dob"]
+            }
         }
         display();
         const auth = getAuth();
