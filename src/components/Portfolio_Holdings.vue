@@ -32,7 +32,7 @@
         </Modal>
 
         <Modal :modalActive="delModalActive">
-            <ODE @deleteEntry = "document" :sellData="sellData" @cancel="() => toggleDelModal()"/>
+            <ODE @deleteEntry = "console.log('delete pressed')" :sellData="sellData" @cancel="() => toggleDelModal()"/>
         </Modal>
     </div>
 </template>
