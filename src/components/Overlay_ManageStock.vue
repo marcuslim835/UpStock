@@ -13,7 +13,7 @@
                 <option value="Moo Moo"> MooMoo </option>
                 <option value="Tiger Brokers"> Tiger Brokers </option>
                 <option value="UOB Kay Hian"> UOB Kay Hian </option>
-                <option value="UOB Kay Hian"> Others </option>
+                <option value="Others"> Others </option>
                 <!-- Add brokers we have here -->
             </select><br><br>
 

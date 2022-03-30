@@ -144,7 +144,7 @@ export const addData = async (userID, ticker, stockName, brokerName, price, quan
             console.log("ADD DATA OF STOCK/INVESTMENT IF DUN EXIST: ", nDoc);
         } else {
             const dict = docSnapshot.data();
-            console.log(dict);
+            console.log(typeof dict);
            
             console.log("ADD DATA (IN DICT): ", ticker in dict);
             if (ticker in dict) {
@@ -161,7 +161,7 @@ export const addData = async (userID, ticker, stockName, brokerName, price, quan
                 console.log(updatedData);
 
                 // Delete current outdated data from firebase
-                await updateDoc(docRef, {"AAPL" : deleteField()});
+                await updateDoc(docRef, {ticker : deleteField()});
                 // Add back updated data
                 dict[ticker] = updatedData;
                 

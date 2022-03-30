@@ -9,7 +9,7 @@
                     <h2 id = 'countHeader' align="left">Number of Holdings: {{holdingsCount}}</h2>
                 </div>
                 <div class = 'top'>     
-                    <button id ='addInvestButton' type="button" @click="() => toggleModal()">
+                    <button id ='addInvestButton' type="button" @click="toggleModal()">
                         <b>+ Add investment</b></button>
                 </div>
             </div>
