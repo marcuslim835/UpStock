@@ -32,7 +32,7 @@
         </Modal>
 
         <Modal :modalActive="delModalActive">
-            <ODE @deleteEntry = "console.log('delete pressed')" :sellData="sellData" @cancel="() => toggleDelModal()"/>
+            <ODE :sellData="sellData" @cancel="() => closeDelModal()"/>
         </Modal>
     </div>
 </template>
@@ -102,7 +102,7 @@ export default {
                 // No user is signed in.
             }
         });
-        const toggleDel = (stockName, ticker, broker, quantity, price, mktPrice) => this.toggleDelModal(stockName, ticker, broker, quantity, price, mktPrice)
+        const toggleDel = (stockName, ticker, broker, quantity, price, mktPrice, profit) => this.toggleDelModal(stockName, ticker, broker, quantity, price, mktPrice, profit)
         var vm = this
         async function displayTable() {
             const auth = getAuth();
@@ -147,8 +147,7 @@ export default {
                             bu.innerHTML = 'Sell'
                             bu.style.background = 'red'
                             bu.style.color = 'white'
-                            bu.onclick = (stockName, ticker, broker, quantity, price, mktPrice) => toggleDel(stockName, ticker, broker, quantity, price, mktPrice)
-                            cell8.appendChild(bu) //insert delete button 
+                            
                         
                             //Profit/Loss calculation
                             let mktTotal = quantity * mktPrice
@@ -165,6 +164,8 @@ export default {
                             vm.totalValue += parseFloat(mktTotal)
                             vm.totalPL += parseFloat(currentPL)            
 
+                            bu.onclick = () => toggleDel(stockName, ticker, broker, quantity, price, mktPrice,  currentPL)
+                            cell8.appendChild(bu) //insert delete button 
                         }  
                     })
                 }
@@ -202,13 +203,12 @@ export default {
         
         toggleDelModal() {
             this.delModalActive = !this.delModalActive;
-            arguments
-            this.sellData = {stockName:arguments[0], ticker:arguments[1], broker:arguments[2], quantity:arguments[3], price:arguments[4], mktPrice:arguments[5]}
+            this.sellData = {stockName:arguments[0], ticker:arguments[1], broker:arguments[2], quantity:arguments[3], price:arguments[4], mktPrice:arguments[5], profit:arguments[6]}
             console.log(arguments)
         },
 
-        deleteEntry() {
-
+        closeDelModal() {
+            this.delModalActive = !this.delModalActive;
         }
 
     },

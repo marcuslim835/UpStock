@@ -16,6 +16,12 @@
                 </tr>
                 <tr>
                     <td>{{sellData.stockName}}</td>
+                    <td>{{sellData.ticker}}</td>
+                    <td>{{sellData.broker}}</td>
+                    <td>{{sellData.quantity}}</td>
+                    <td>{{sellData.price}}</td>
+                    <td>{{sellData.mktPrice}}</td>
+                    <td>{{sellData.profit}}</td>
                 </tr>
             </table>
         </div>
@@ -29,8 +35,11 @@
 
 <script>
 import Button from "./Button.vue"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import * as ST from '../api/holdingsAccess.js';
+
 export default {
-    emits: ["deleteEntry", "cancel"],
+    emits: ["cancel"],
 
     props: ["sellData"],
 
@@ -38,9 +47,28 @@ export default {
         Button,
     },
 
+    data() {
+        return {
+            user : false,
+        }
+    },
+
+    mounted() {
+        const auth = getAuth();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                this.user = user;
+            }
+        });
+    },
+
     methods: {
-        deleteEntry() {
-            this.$emit("deleteEntry")
+        async deleteEntry() {
+            const auth = getAuth();
+            const currUser = auth.currentUser;
+            await ST.delData(currUser.uid, this.sellData.ticker, this.sellData.broker);
+
+            this.$router.push({name : 'Portfolio'});
         },
 
         cancelDelete() {

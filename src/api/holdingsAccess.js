@@ -161,7 +161,7 @@ export const addData = async (userID, ticker, stockName, brokerName, price, quan
                 console.log(updatedData);
 
                 // Delete current outdated data from firebase
-                await updateDoc(docRef, {ticker : deleteField()});
+                await updateDoc(docRef, {[ticker] : deleteField()});
                 // Add back updated data
                 dict[ticker] = updatedData;
                 
@@ -180,5 +180,33 @@ export const addData = async (userID, ticker, stockName, brokerName, price, quan
     }
 }
 
+export const delData = async (userID, ticker, brokerName) => {
+    try {
+        var docRef = doc(db, userID, "holdings")
+        const docSnap = await getDoc(docRef)
 
+        if (docSnap.exists()) {
+            const dict = docSnap.data()
+            const currStock = dict[ticker]
+            const currStockBrokers = currStock["broker"]
+
+            delete currStockBrokers[brokerName];
+            console.log(currStockBrokers)
+            console.log(Object.keys(currStockBrokers).length)
+            if (Object.keys(currStockBrokers).length > 0) {
+                console.log("RAN DELETE STOCK > 0")
+                const updatedData = {broker: currStockBrokers, name: currStock["name"], type: currStock["type"]};
+                await updateDoc(docRef, {[ticker] : deleteField()});
+                dict[ticker] = updatedData;
+                await setDoc(docRef, dict)
+            } else {
+                await updateDoc(docRef, {[ticker] : deleteField()});
+            }
+        }
+    } 
+    catch (error) {
+        console.error(error);
+    }
+    
+}
 
