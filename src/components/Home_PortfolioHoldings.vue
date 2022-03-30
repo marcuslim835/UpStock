@@ -78,7 +78,7 @@ export default {
             console.log('Updating portfolio pie chart')
             this.hasData = true
             this.holdingsCount += 1
-            this.chartData[ST.TYPE_MAP[data[0]]] += data[1]
+            this.chartData[ST.TYPE_MAP[data[0]]] += parseInt(data[1])
         }
     },
 
@@ -128,7 +128,7 @@ export default {
                                 tickerQty += parseInt(qty)
                                 sum += (map[ST.STOCK_PRICE]) * qty
                             }
-                            let totalWorth = (tickerQty * mktPrice) 
+                            let totalWorth = (tickerQty * mktPrice).toFixed(2) 
 
                             
                             nameTickerCell.innerHTML = stockName + '|' + ticker + '<br><br> '
