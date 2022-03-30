@@ -154,6 +154,7 @@ export default {
                             let mktTotal = quantity * mktPrice
                             let currentPL = quantity * (-parseFloat(price) + parseFloat(mktPrice))
                             currentPL = currentPL.toFixed(2)
+                            mktTotal = mktTotal.toFixed(2)
                             if (currentPL < 0) {
                                 cell7.innerHTML = currentPL + ' USD'
                                 cell7.style.color = 'red'
@@ -161,9 +162,8 @@ export default {
                                 cell7.innerHTML = '+ ' + currentPL + ' USD'
                                 cell7.style.color = 'green'
                             }
-
                             vm.totalValue += parseFloat(mktTotal)
-                            vm.totalPL += parseFloat(currentPL)            
+                            vm.totalPL += parseFloat(currentPL)
 
                         }  
                     })
