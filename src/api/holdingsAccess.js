@@ -72,41 +72,7 @@ export const getHoldingsQty = async (userID) => {
     }
 }
 
-//Return Map {type : {ticker: qty}, ....}
-export const getDiversity = async (userID) => { 
-    try {
-        const docRef = doc(db, userID,"holdings") //userID as placeholder for curr.uid
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
-            let dict =  docSnap.data()
-            let newDict = new Map()
-            var keys= Object.keys(dict)
-            for (const ticker of keys) {
-                let qty = 0
-                let type = dict[ticker]['type']
-                let mapBroker = dict[ticker]['broker']
-                for (const maps of Object.values(mapBroker)) {
-                    qty += maps[STOCK_QTY]
-                }
-                if (newDict.has(type)) {
-                    let getNestedMap = newDict.get(type)
-                    getNestedMap.set(ticker,qty)
-                    newDict.set(type,getNestedMap)
-                } else {
-                    let getNestedMap = new Map()
-                    getNestedMap.set(ticker,qty)
-                    newDict.set(type,getNestedMap)
-                }
-            }
-            //console.log(mapper)
-            return newDict
-        } else {
-            console.log("Fail to load firebase");
-        }
-    } catch (error) {
-        console.error(error);
-    }
-}
+
 
 //Obtain Agg price
 export const updateAggPrice = async (userID,ticker) => { 
