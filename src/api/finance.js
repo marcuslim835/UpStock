@@ -17,6 +17,7 @@ export const getStockPrice = async (ticker) => { // can be used for multiple sto
 
         await axios.request(options).then((response) => {
             const data = response.data.quoteResponse.result;
+            console.log(data)
             result = data.map(stock => ({
                 [stock.symbol]: stock.regularMarketPrice.toFixed(2)
             }))
@@ -83,7 +84,7 @@ export const getHistoricalPL = async (tickers, range) => {
 export const getDividendInformation = async (ticker) => { // only a single stock
     const options = {
         method: 'GET',
-        url: 'https://yh-finance.p.rapidapi.com/market/v2/get-summary',
+        url: 'https://yh-finance.p.rapidapi.com/stock/v2/get-summary',
         params: {symbol: ticker, region: 'US'},
         headers: {
             'x-rapidapi-host': 'yh-finance.p.rapidapi.com',
@@ -97,7 +98,8 @@ export const getDividendInformation = async (ticker) => { // only a single stock
         await axios.request(options).then((response) => {
             const data = response.data;
             result = {
-                dividend: data.summaryDetail.dividendRate.raw,
+                dividendRate: data.summaryDetail.dividendRate.raw,
+                dividendYield: data.summaryDetail.dividendYield.raw,
                 dividendDate: data.calendarEvents.dividendDate.fmt,
                 exDividendDate: data.calendarEvents.exDividendDate.fmt,
             };
