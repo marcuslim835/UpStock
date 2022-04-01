@@ -5,21 +5,19 @@
             <div>
                 <p> Name: <strong>{{user.displayName}}</strong><br>
                     Email: <strong>{{user.email}}</strong><br>
-                    Uid: <strong>{{user.uid}}</strong><br>
-                    Provider: <strong>{{user.providerData[0].providerId}}</strong> </p>
+                    UID: <strong>{{user.uid}}</strong><br>
+                    Sign-In Provider: <strong>{{user.providerId}}</strong> </p>
             </div>
-            Region: <div id = "region" v-if="user"> Region </div>
-            Date of Birth: <div id = "dob" v-if="user"> Dob </div>
         </div>
     </div>
 </template>
 
 <script>
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import firebaseApp from "../api/firebaseAccessor.js";
-import { getFirestore } from "firebase/firestore";
-import { doc, getDoc } from "firebase/firestore";
-const db = getFirestore(firebaseApp);
+//import firebaseApp from "../api/firebaseAccessor.js";
+//import { getFirestore } from "firebase/firestore";
+//import { doc, getDoc } from "firebase/firestore";
+//const db = getFirestore(firebaseApp);
 
 export default {
     name: 'Profile',
@@ -31,7 +29,7 @@ export default {
     },
 
     mounted() {
-        async function display(){
+        /*async function display(){
             const auth = getAuth();
             const curr = auth.currentUser;
             const docRef = doc(db, curr.uid, "credentials");
@@ -41,7 +39,7 @@ export default {
                 document.getElementById("dob").innerHTML = docSnap.data()["Dob"]
             }
         }
-        display();
+        display();*/
         const auth = getAuth();
         onAuthStateChanged(auth, (user) => {
             if (user) {

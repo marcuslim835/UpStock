@@ -1,8 +1,8 @@
 <template>
-    <div class="navBar" v-if="user">
+    <div class="main" v-if="user">
         <router-link to="/accountOverview">Account Overview</router-link> |
         <router-link to="/editDetails">Edit Details</router-link> |
-        <router-link to="/privacySettings">Privacy Settings</router-link>
+        <router-link to="/privacySettings">Privacy Settings (to remove)</router-link>
     </div>
 </template>
 
