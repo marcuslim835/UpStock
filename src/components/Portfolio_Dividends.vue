@@ -27,18 +27,18 @@ export default {
             if (user) {
                 // User is signed in.
                 this.user = user
-                displayTable()
+                setTimeout(displayTable, 2000)
             } else {
                 // No user is signed in.
             }
         });
         //var vm = this
         async function displayTable() {
-            //const auth = getAuth();
-            //const curr = auth.currentUser;
+            const auth = getAuth();
+            const curr = auth.currentUser;
             var ind = 1
             const table = document.getElementById('dividendTable')
-            const getMap = ST.getHoldingsQty('userID') 
+            const getMap = ST.getHoldingsQty(curr.uid) 
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
