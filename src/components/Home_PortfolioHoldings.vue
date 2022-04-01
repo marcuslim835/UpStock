@@ -14,16 +14,16 @@
                 </div>
             </div>
             <table id = 'homeHoldingTable'> 
-            <tr>
-                <th>Name|Ticker</th>
-                <th>Type</th>
-                <th>Current</th>
-                <th>Quantity</th>
-                <th>Total Worth</th>
-                <th>% Change</th>
-                <th></th>
-            </tr>
-        </table>
+                <tr>
+                    <th>Name|Ticker</th>
+                    <th>Type</th>
+                    <th>Current</th>
+                    <th>Quantity</th>
+                    <th>Total Worth</th>
+                    <th>% Change</th>
+                    <th></th>
+                </tr>
+            </table>
         <Modal :modalActive="modalActive">
             <OMS @cancel="() => toggleModal()"/>
         </Modal>
@@ -199,7 +199,8 @@ export default {
 
 <style scoped>
 .sect {
-    float: left
+    float: left;
+    margin-left: 100px;
 }
 
 .top {
@@ -209,7 +210,7 @@ export default {
 
 #pie {
     text-align: center;
-    margin-left: 80px;
+    margin-left: 200px;
 }
 
 #pieHeader, #tableHeader, #countHeader {

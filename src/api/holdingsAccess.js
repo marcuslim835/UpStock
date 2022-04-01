@@ -58,7 +58,7 @@ export const getHoldingsQty = async (userID) => {
                 let qty = 0
                 let mapBroker = dict[ticker]['broker']
                 for (const maps of Object.values(mapBroker)) {
-                    qty += maps[STOCK_QTY] 
+                    qty += parseInt(maps[STOCK_QTY]) 
                 }
                 mapper.set(ticker,qty)
             }

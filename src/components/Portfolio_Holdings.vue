@@ -111,7 +111,7 @@ export default {
             console.log('Current user id: ' + curr.uid) //user id
             var ind = 1
             const table = document.getElementById('holdingTable')
-            const getMap = ST.getAllHoldings('userID') 
+            const getMap = ST.getAllHoldings(curr.uid) 
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
@@ -130,16 +130,16 @@ export default {
                             row.style.border = 'red'
                             ind += 1
                             let broker = brokerName
-                            let quantity = (map[ST.STOCK_QTY])
-                            let price = (map[ST.STOCK_PRICE])
+                            let quantity = parseInt(map[ST.STOCK_QTY])
+                            let price = parseInt(map[ST.STOCK_PRICE])
 
-                            var cell1 = row.insertCell(0); var cell2 = row.insertCell(1); 
-                            var cell3 = row.insertCell(2); var cell4 = row.insertCell(3); 
-                            var cell5 = row.insertCell(4); var cell6 = row.insertCell(5);
-                            var cell7 = row.insertCell(6); var cell8 = row.insertCell(7);
-                            cell1.innerHTML = stockName, cell2.innerHTML = ticker, cell3.innerHTML = broker; 
-                            cell4.innerHTML = quantity; cell5.innerHTML = price + ' USD';
-                            cell6.innerHTML = mktPrice + ' USD'
+                            var nameCell = row.insertCell(0); var tickerCell = row.insertCell(1); 
+                            var brokerCell = row.insertCell(2); var qtyCell = row.insertCell(3); 
+                            var priceCell = row.insertCell(4); var currentCell = row.insertCell(5);
+                            var plCell = row.insertCell(6); var buttonCell = row.insertCell(7);
+                            nameCell.innerHTML = stockName, tickerCell.innerHTML = ticker, brokerCell.innerHTML = broker; 
+                            qtyCell.innerHTML = quantity; priceCell.innerHTML = price + ' USD';
+                            currentCell.innerHTML = mktPrice + ' USD'
 
                             //creating sell button
                             var bu = document.createElement('button')
@@ -155,17 +155,17 @@ export default {
                             let currentPL = quantity * (-parseFloat(price) + parseFloat(mktPrice))
                             currentPL = currentPL.toFixed(2)
                             if (currentPL < 0) {
-                                cell7.innerHTML = currentPL + ' USD'
-                                cell7.style.color = 'red'
+                                plCell.innerHTML = currentPL + ' USD'
+                                plCell.style.color = 'red'
                             } else {
-                                cell7.innerHTML = '+ ' + currentPL + ' USD'
-                                cell7.style.color = 'green'
+                                plCell.innerHTML = '+ ' + currentPL + ' USD'
+                                plCell.style.color = 'green'
                             }
                             vm.totalValue = (parseFloat(vm.totalValue) + parseFloat(mktTotal)).toFixed(2)
                             vm.totalPL = (parseFloat(vm.totalPL) + parseFloat(currentPL)).toFixed(2)
 
                             bu.onclick = () => toggleDel(stockName, ticker, broker, quantity, price, mktPrice,  currentPL)
-                            cell8.appendChild(bu) //insert delete button 
+                            buttonCell.appendChild(bu) //insert delete button 
                         }  
                     })
                 }

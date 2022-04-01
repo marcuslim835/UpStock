@@ -49,6 +49,7 @@
         <option value="Reit">REIT</option>
         <option value="Finance">Finance</option>
         <option value="Energy">Energy</option>
+        <option value="Healthcare">Healthcare</option>
         <option value="Industrials">Industrials</option>
         <option value="Others">OTHERS</option>
         <!-- Can add more tags here --></select
