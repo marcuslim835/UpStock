@@ -103,10 +103,10 @@ export const updateAggPrice = async (userID,ticker) => {
 
 export const addData = async (userID, ticker, stockName, brokerName, price, quantity, tag) => {
     try {
-        const docRef = doc(db, String(userID), "holdings");
+        const docRef = doc(db, userID, "holdings");
         const docSnapshot = await getDoc(docRef);
         if (!docSnapshot.exists()) {
-            const nDoc = await setDoc(docRef, {[ticker]: {broker: /*new Map([brokerName, {qty: quantity, price: price}])*/{[brokerName]: {qty: quantity, price: price}}, name: stockName, type: tag}});
+            const nDoc = await setDoc(docRef, {[ticker]: {broker: {[brokerName]: {qty: quantity, price: price}}, name: stockName, type: tag}});
             console.log("ADD DATA OF STOCK/INVESTMENT IF DUN EXIST: ", nDoc);
         } else {
             const dict = docSnapshot.data();
@@ -127,7 +127,7 @@ export const addData = async (userID, ticker, stockName, brokerName, price, quan
                 console.log(updatedData);
 
                 // Delete current outdated data from firebase
-                await updateDoc(docRef, {[ticker] : deleteField()});
+                // await updateDoc(docRef, {[ticker] : deleteField()});
                 // Add back updated data
                 dict[ticker] = updatedData;
                 

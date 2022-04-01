@@ -39,7 +39,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth"
 import * as ST from '../api/holdingsAccess.js';
 
 export default {
-    emits: ["cancel"],
+    emits: ["cancel", "deleted"],
 
     props: ["sellData"],
 
@@ -64,11 +64,17 @@ export default {
 
     methods: {
         async deleteEntry() {
-            const auth = getAuth();
-            const currUser = auth.currentUser;
-            await ST.delData(currUser.uid, this.sellData.ticker, this.sellData.broker);
-
-            this.$router.push({name : 'Portfolio'});
+            try {
+                const auth = getAuth();
+                const currUser = auth.currentUser;
+                console.log(typeof currUser.uid)
+                await ST.delData(currUser.uid, this.sellData.ticker, this.sellData.broker);
+                console.log("DELETE ENTRY AFTER AWAIT")
+                this.$emit("deleted")
+            }
+            catch (error) {
+                console.error(error);
+            }
         },
 
         cancelDelete() {

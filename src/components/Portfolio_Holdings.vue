@@ -10,7 +10,7 @@
                 <h3 id = 'totalPL' align="left">{{totalPL}} USD</h3>
             </div>
             <div class="inline-div2">
-                <button id ='addInvestButton' type="button" @click="toggleModal()">+ Add investment</button>
+                <button id ='addInvestButton' type="button" @click="() => toggleModal()">+ Add investment</button>
             </div>
         </div>
         <div class = 'tableDiv'>
@@ -28,11 +28,11 @@
         </table>
         </div>
         <Modal :modalActive="modalActive">
-            <OMS @cancel="() => toggleModal()"/>
+            <OMS @cancel="() => toggleModal()" @done="() => toggleAndRefresh()"/>
         </Modal>
 
         <Modal :modalActive="delModalActive">
-            <ODE :sellData="sellData" @cancel="() => closeDelModal()"/>
+            <ODE :sellData="sellData" @cancel="() => closeDelModal()" @deleted="() => closeDelModalAndRefresh()"/>
         </Modal>
     </div>
 </template>
@@ -94,7 +94,7 @@ export default {
     mounted() {
         console.log('mounted on Portfolio page');
         const auth = getAuth()
-        onAuthStateChanged(auth, (user)  =>{
+        onAuthStateChanged(auth, (user)  => {
             if (user) {
                 // User is signed in.
                 this.user = user
@@ -200,6 +200,12 @@ export default {
         toggleModal() {
             this.modalActive = !this.modalActive;
         },
+
+        toggleAndRefresh() {
+            console.log("toggleAndRefreshed")
+            this.modalActive = !this.modalActive;
+            this.$router.go();
+        },
         
         toggleDelModal() {
             this.delModalActive = !this.delModalActive;
@@ -209,6 +215,11 @@ export default {
 
         closeDelModal() {
             this.delModalActive = !this.delModalActive;
+        },
+
+        closeDelModalAndRefresh() {
+            this.delModalActive = !this.delModalActive;
+            this.$router.go();
         }
 
     },
