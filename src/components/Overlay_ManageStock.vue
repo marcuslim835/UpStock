@@ -6,7 +6,7 @@
   <br />
 
   <div>
-    <form>
+    <form id="userForm">
       <select id="brokers">
         <option hidden>Select Broker:</option>
 
@@ -90,7 +90,7 @@ export default {
     },
     */
 
-  emits: ["cancel"],
+  emits: ["cancel", "done"],
 
   components: {
     Button,
@@ -151,6 +151,7 @@ export default {
 
   methods: {
     async saveToFirebase() {
+      console.log("Save to Firebase called")
       let stockName = document.getElementById("stockname").value;
       let ticker = document.getElementById("ticker").value;
       let qty = document.getElementById("quantity").value;
@@ -158,12 +159,14 @@ export default {
       //let purchaseDate = document.getElementById("purchasedate").value;
       let brokerName = document.getElementById("brokers").value;
       let tag = document.getElementById("tags").value;
-      console.log(tag);
+      console.log("DETAILS CAPTURED FROM FORM");
 
       try {
         const auth = getAuth();
         const currUser = auth.currentUser;
 
+        console.log("Just before calling ST.addData()")
+        
         await ST.addData(
           currUser.uid,
           ticker,
@@ -174,6 +177,8 @@ export default {
           tag
         );
         console.log("AFTER ADD DATA");
+        document.getElementById("userForm").reset();
+        this.$emit("done")
 
         /*
                 let userPortfolio = doc(db, String(currUser.uid), "holdings")
@@ -188,14 +193,18 @@ export default {
         console.error("Error adding document: ", error);
       }
 
-      //this.$router.push({name : 'Portfolio'});
+      
     },
 
+    
     toggleModal() {
+      document.getElementById("userForm").reset();  
       this.$emit("cancel");
+      console.log("Cancel button pressed")
     },
+    
   },
-
+  
   beforeUnmount() {
     function reinitTable() {
       console.log("Reinitialise Table");
@@ -206,6 +215,7 @@ export default {
     }
     reinitTable();
   },
+  
 };
 </script>
 
