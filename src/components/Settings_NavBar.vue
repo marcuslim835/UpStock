@@ -1,8 +1,7 @@
 <template>
-    <div class="main" v-if="user">
+    <div class="main" id = "settingNavBar" v-if="user">
         <router-link to="/accountOverview">Account Overview</router-link> |
-        <router-link to="/editDetails">Edit Details</router-link> |
-        <router-link to="/privacySettings">Privacy Settings (to remove)</router-link>
+        <router-link to="/editDetails">Edit Settings</router-link>
     </div>
 </template>
 
@@ -30,5 +29,25 @@ export default {
 </script>
 
 <style scoped>
-
+#settingNavBar {
+  display: flex;
+  border: 1px solid #c3c3c3;
+  background-color: #212529;
+  overflow-x: hidden;
+  border-right: 1px solid white;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+#settingNavBar a {
+  padding: 20px 20px 20px 20px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #F8F9FA;
+  
+  
+}
+#settingNavBar a:hover {
+  background-color: #343A40;
+}
 </style>

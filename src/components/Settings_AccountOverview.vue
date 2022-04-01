@@ -1,6 +1,5 @@
 <template>
     <div class="main">
-        <h2> Account Overview </h2>
         <div v-if="user">
             <div>
                 <p> Name: <strong>{{user.displayName}}</strong><br>

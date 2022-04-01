@@ -1,7 +1,6 @@
 <template>
   <div class="main">
-    <h2>Edit Details</h2>
-
+    <br>
     <div class="firebaseStuff">
       <div class="dispNameField">
         <label for="displayName"> New Display Name: </label>
@@ -32,9 +31,16 @@
         <br /><br />
       </div>
     </div>
-
+    <div class="addBrokerField">
+        <label for="addbroker"> Add Broker: </label>
+        <input type="text" id="addbroker" placeholder="Enter Broker Name" />
+        <button id="savebutton" type="button" v-on:click="addBroker()">
+          Add Broker
+        </button>
+        <br /><br />
+    </div>
     <div class="details">
-      <label for="brokers"> Broker List: </label>
+      <label for="brokers"> Remove Broker: </label>
       <select id="brokers">
         <option hidden>Select Broker:</option>
         <!-- Brokers are dynamically added from Firebase -->
@@ -126,6 +132,24 @@ export default {
       let index = this.brokerList.indexOf(selectedValue);
       this.brokerList.splice(index, 1)
       alert("Deleting Broker");
+      console.log(this.brokerList);
+      try {
+        const auth = getAuth();
+        const curr = auth.currentUser;
+        await setDoc(doc(db, curr.uid, "credentials"), {
+              brokers: this.brokerList,
+            });
+        console.log("New brokers set to Firebase:", this.brokerList)
+      } catch (error) {
+        console.error("Error updating details", error);
+      }
+      this.$router.push("/accountOverview");
+    },
+    async addBroker() {
+      var selectedValue = document.getElementById("addbroker").value;
+      console.log(this.brokerList);
+      this.brokerList.push(selectedValue)
+      alert("Adding New Broker");
       console.log(this.brokerList);
       try {
         const auth = getAuth();
