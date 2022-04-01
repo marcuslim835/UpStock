@@ -200,7 +200,6 @@ export default {
 <style scoped>
 .sect {
     float: left;
-    margin-left: 100px;
 }
 
 .top {
