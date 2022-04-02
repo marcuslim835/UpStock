@@ -67,10 +67,10 @@ export default {
             const auth = getAuth();
             const curr = auth.currentUser;
             console.log('Current user id: ' + curr.uid) //user id
-            var ind = 1
+            var ind = 1;
             var count = 0;
             var table = document.getElementById('holdingTable')
-            var getMap = ST.getAllHoldings('userID') 
+            var getMap = ST.getAllHoldings(curr.uid);
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
