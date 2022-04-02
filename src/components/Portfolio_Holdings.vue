@@ -10,7 +10,7 @@
                 <h3 id = 'totalPL' align="left">{{totalPL}} USD</h3>
             </div>
             <div class="inline-div2">
-                <button id ='addInvestButton' type="button" @click="() => TogglePopup('buttonTrigger')">+ Add investment</button>
+                <button id ='addInvestButton' type="button" @click="() => toggleModal()">+ Add investment</button>
             </div>
         </div>
         <div class = 'tableDiv'>
@@ -27,9 +27,13 @@
             </tr>
         </table>
         </div>
-        <Popup v-if="popupTriggers.buttonTrigger">
-            <OMS :TogglePopup = "() => TogglePopup('buttonTrigger')"/>
-        </Popup>
+        <Modal :modalActive="modalActive">
+            <OMS @cancel="() => toggleModal()" @done="() => toggleAndRefresh()"/>
+        </Modal>
+
+        <Modal :modalActive="delModalActive">
+            <ODE :sellData="sellData" @cancel="() => closeDelModal()" @deleted="() => closeDelModalAndRefresh()"/>
+        </Modal>
     </div>
 </template>
 
@@ -37,23 +41,60 @@
 import { getAuth, onAuthStateChanged} from "firebase/auth";
 import * as API from '../api/finance.js';
 import * as ST from '../api/holdingsAccess.js';
-import Popup from './Popup.vue'; 
-import { ref } from 'vue'
+import Modal from './Modal.vue'; 
+//import { ref } from 'vue'
 import OMS from './Overlay_ManageStock.vue'
-
+import ODE from './Overlay_DeleteEntry.vue'
 
 export default {
     data() {
         return {
             user : false,
             totalValue: 0,
-            totalPL: 0
+            totalPL: 0,
+
+            modalActive: false,
+            delModalActive: false,
+            sellData: "",
+
         }
     },
+
+    components: {
+        OMS,
+        Modal,
+        ODE,
+    },
+
+
+    /*
+    setup() {
+        const modalActive = ref(false);  // For Adding Investment
+        const delModalActive = ref(false); // For Deleting Investment
+        console.log("SETUPPP")
+
+
+        const toggleModal = () => {
+            modalActive.value = !modalActive.value;
+            //console.log("BUTTON TRIGGERED: ", modalActive.value)
+        }; 
+        const toggleDelModal = () => {
+            delModalActive.value = !delModalActive.value;
+        };
+
+        return {
+            modalActive,
+            toggleModal,
+            delModalActive,
+            toggleDelModal
+        };
+    },
+    */
+
     mounted() {
-        console.log('mounted');
+        console.log('mounted on Portfolio page');
         const auth = getAuth()
-        onAuthStateChanged(auth, (user)  =>{
+        onAuthStateChanged(auth, (user)  => {
             if (user) {
                 // User is signed in.
                 this.user = user
@@ -62,81 +103,77 @@ export default {
                 // No user is signed in.
             }
         });
+        const toggleDel = (stockName, ticker, broker, quantity, price, mktPrice, profit) => this.toggleDelModal(stockName, ticker, broker, quantity, price, mktPrice, profit)
         var vm = this
         async function displayTable() {
             const auth = getAuth();
             const curr = auth.currentUser;
             console.log('Current user id: ' + curr.uid) //user id
-            var ind = 1;
-            var count = 0;
-            var table = document.getElementById('holdingTable')
-            var getMap = ST.getAllHoldings(curr.uid);
+
+            var ind = 1
+            const table = document.getElementById('holdingTable')
+            const getMap = ST.getAllHoldings(curr.uid);
+
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
                     alert('Nothing to load')
                 } else {
-                    console.log(x)
                     for (const key of x.keys()) {
                     let ticker = key;
                     let stockName = x.get(ticker)[ST.NAME_POS] //stockName
                     let myMap = x.get(ticker)[ST.BROKERS_POS] //broker map
-                    console.log(count + ' ' + myMap)
-                    count += 1
-                    console.log(ticker)
                     let data = API.getStockPrice(ticker); //returns a promise
                     data.then(y => {
                         let mktPrice = Object.values(y[0])[0];
                         console.log('price for '+ ticker + ' is ' + mktPrice)
                         for (const [brokerName, map] of Object.entries(myMap)) {
-                            var row = table.insertRow(ind) 
+                            var row = table.insertRow(ind)
+                            row.style.border = 'red'
                             ind += 1
-                            var broker = brokerName
-                            var quantity = (map[ST.STOCK_QTY])
-                            var price = (map[ST.STOCK_PRICE])
+                            let broker = brokerName
+                            let quantity = parseInt(map[ST.STOCK_QTY])
+                            let price = parseInt(map[ST.STOCK_PRICE])
 
-                            var cell1 = row.insertCell(0); var cell2 = row.insertCell(1); 
-                            var cell3 = row.insertCell(2); var cell4 = row.insertCell(3); 
-                            var cell5 = row.insertCell(4); var cell6 = row.insertCell(5);
-                            var cell7 = row.insertCell(6); var cell8 = row.insertCell(7);
-                            cell1.innerHTML = stockName, cell2.innerHTML = ticker, cell3.innerHTML = broker; 
-                            cell4.innerHTML = quantity; cell5.innerHTML = price + ' USD';
-                            cell6.innerHTML = mktPrice + ' USD'
+                            var nameCell = row.insertCell(0); var tickerCell = row.insertCell(1); 
+                            var brokerCell = row.insertCell(2); var qtyCell = row.insertCell(3); 
+                            var priceCell = row.insertCell(4); var currentCell = row.insertCell(5);
+                            var plCell = row.insertCell(6); var buttonCell = row.insertCell(7);
+                            nameCell.innerHTML = stockName, tickerCell.innerHTML = ticker, brokerCell.innerHTML = broker; 
+                            qtyCell.innerHTML = quantity; priceCell.innerHTML = price + ' USD';
+                            currentCell.innerHTML = mktPrice + ' USD'
 
-                            //creating delete button
+                            //creating sell button
                             var bu = document.createElement('button')
                             bu.className = 'bwt'
                             bu.id  = String(stockName)
                             bu.innerHTML = 'Sell'
-                            bu.onclick = function() {
-                                deleteinstrument2(ticker)
-                            }
-                            cell8.appendChild(bu) //insert delete button 
+                            bu.style.background = 'red'
+                            bu.style.color = 'white'
+                            
                         
                             //Profit/Loss calculation
                             let mktTotal = quantity * mktPrice
                             let currentPL = quantity * (-parseFloat(price) + parseFloat(mktPrice))
                             currentPL = currentPL.toFixed(2)
                             if (currentPL < 0) {
-                                cell7.innerHTML = currentPL + ' USD'
-                                cell7.style.color = 'red'
+                                plCell.innerHTML = currentPL + ' USD'
+                                plCell.style.color = 'red'
                             } else {
-                                cell7.innerHTML = '+ ' + currentPL + ' USD'
-                                cell7.style.color = 'green'
+                                plCell.innerHTML = '+ ' + currentPL + ' USD'
+                                plCell.style.color = 'green'
                             }
-                            vm.totalValue += parseInt(mktTotal) 
-                            vm.totalPL += parseInt(currentPL)              
+                            vm.totalValue = (parseFloat(vm.totalValue) + parseFloat(mktTotal)).toFixed(2)
+                            vm.totalPL = (parseFloat(vm.totalPL) + parseFloat(currentPL)).toFixed(2)
+
+                            bu.onclick = () => toggleDel(stockName, ticker, broker, quantity, price, mktPrice,  currentPL)
+                            buttonCell.appendChild(bu) //insert delete button 
                         }  
                     })
                 }
                 }
                 
             })
-            document.getElementById('totalValue').innerHTML = vm.totalValue
-            document.getElementById('totalPL').innerHTML = vm.totalPL
-            async function deleteinstrument2(x) {
-                alert('delete button pressed for ' + x)
-            }
         }
     },
 
@@ -153,35 +190,42 @@ export default {
         reinitTable()
     },
 
-    /*
+    
     methods : {
+        /*
         addInvestment() {
             this.$router.push({name:'AddStock'}) //TODO
 
         }
-    },
-    */
+        */
 
-    setup() {
-        const popupTriggers = ref({
-            buttonTrigger : false 
-        });
+        toggleModal() {
+            this.modalActive = !this.modalActive;
+        },
 
-        const TogglePopup = (trigger) => {
-            popupTriggers.value[trigger] = !popupTriggers.value[trigger]
-        }; 
+        toggleAndRefresh() {
+            console.log("toggleAndRefreshed")
+            this.modalActive = !this.modalActive;
+            this.$router.go();
+        },
+        
+        toggleDelModal() {
+            this.delModalActive = !this.delModalActive;
+            this.sellData = {stockName:arguments[0], ticker:arguments[1], broker:arguments[2], quantity:arguments[3], price:arguments[4], mktPrice:arguments[5], profit:arguments[6]}
+            console.log(arguments)
+        },
 
-        return {
-            Popup,
-            popupTriggers,
-            TogglePopup
+        closeDelModal() {
+            this.delModalActive = !this.delModalActive;
+        },
+
+        closeDelModalAndRefresh() {
+            this.delModalActive = !this.delModalActive;
+            this.$router.go();
         }
-    },
 
-    components: {
-        OMS,
-        Popup
-    }
+    },
+    
 
 }
 
@@ -189,27 +233,24 @@ export default {
 
 <style>
 #holdingTable {
-    width: 100%;
-    height: 5px;  
+    width: 100%;  
+    height:10px;
     border: 1px solid white; 
     border-collapse: collapse;
+    font-size: 20px;
 }
 
-th,td {
+#holdingTable th {
+    background-color: gray;
+    border: 1px solid white;
     text-align: center;
-    font-size: 20px;
     padding: 10px;
 }
 
-th {
-    background-color: gray;
-}
-
-th,td {
+#holdingTable tr td {
     border: 1px solid white;
-    border-collapse: collapse;
+    padding: 10px;
 }
-
 
 .inline-div {
     width: 300px;

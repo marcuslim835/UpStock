@@ -5,7 +5,6 @@ import News from "@/views/News.vue";
 import Portfolio from "@/views/Portfolio.vue";
 import AccountOverview from "@/views/AccountOverview.vue";
 import EditDetails from "@/views/EditDetails.vue"
-import PrivacySettings from "@/views/PrivacySettings.vue"
 import StockPage from "@/views/StockPage.vue";
 import StockSearch from "@/views/StockSearch.vue";
 import AddStock from "@/components/Overlay_ManageStock.vue";
@@ -42,11 +41,6 @@ const routes = [
     component: EditDetails,
   },
   {
-    path: "/privacySettings",
-    name: "PrivacySettings",
-    component: PrivacySettings,
-  },
-  {
     path: "/stockPage",
     name: "StockPage",
     component: StockPage,
@@ -57,7 +51,6 @@ const routes = [
     name: "StockSearch",
     component: StockSearch,
   },
-
   {
     path: "/addStock",
     name: "AddStock",

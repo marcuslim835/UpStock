@@ -1,5 +1,5 @@
 <template>
-  <Header content="Edit Details"/>
+  <Header content="Edit Settings"/>
   <NavigationBar/>
   <Settings_NavBar/>
   <Details_Edit/>

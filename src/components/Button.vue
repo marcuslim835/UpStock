@@ -1,5 +1,5 @@
 <template>
-    <button :class="[greenButtonTheme ? 'greenbg' : 'whitebg', 'baseButton']" @click="buttonClicked"> {{ buttonText }} </button>
+    <button type='button' :class="[greenButtonTheme ? 'greenbg' : 'whitebg', 'baseButton']" @click="buttonClicked"> {{ buttonText }} </button>
 </template>
  
 <script>
