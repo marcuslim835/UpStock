@@ -28,7 +28,8 @@ export default {
           // User is signed in.
           const stocks = await DB.getHoldingsQty(user.uid);
           const prices = await API.getHistoricalValue(stocks, "1y");
-          this.chartdata = prices
+          console.log(prices);
+          this.chartdata = prices;
           this.loaded = true;
         }
       });

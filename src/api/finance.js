@@ -49,9 +49,13 @@ export const getHistoricalStockPrice = async (ticker, quantity, range) => {
             const prices = data.chart.result[0].indicators.quote[0].close;
 
             for (let i = 0; i < 12; i++) {
-                result[new Date(timestamps[i] * 1000).toUTCString().substring(5, 16)] = prices[i] * quantity;
+                result[new Date(timestamps[i] * 1000).toString().substring(4, 15)] = prices[i] * quantity;
             }
         });
+
+        if (result.prototype.hasOwnProperty.call('lid')) {
+            delete result['lid'];
+        }
 
         return result;
     } catch (error) {
@@ -68,7 +72,6 @@ export const getHistoricalValue = async (tickers, range) => { // tickers is json
             temp.push(data);
         }
 
-        console.log(temp);
         const result = temp.reduce((date, price) => {
             Object.entries(price).forEach(([key, val]) => {
                 date[key] = (Math.round(((date[key] || 0) + val) * 100) / 100);
