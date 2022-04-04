@@ -2,52 +2,39 @@
   <div class="main">
     <br>
     <div class="firebaseStuff">
-      <div class="dispNameField">
+      <div id = 'inputField' class="dispNameField">
         <label for="displayName"> New Display Name: </label>
-        <input
-          type="text"
-          id="displayName"
-          placeholder="Enter New Display Name"
-        />
-        <button id="savebutton" type="button" v-on:click="changeName()">
-          Change Display Name
-        </button>
+        <input type="text" id="displayName" placeholder="Enter New Display Name" />
+        <button id ='updateButton' type="button" v-on:click="changeName()"> 
+          <b>Update </b></button>
       </div>
-      <br />
-      <div class="emailField">
+      <div id = 'inputField' class="emailField">
         <label for="emailEntry"> New Email: </label>
         <input type="text" id="emailEntry" placeholder="Enter New Email" />
-        <button id="savebutton" type="button" v-on:click="changeEmail()">
-          Change Email
-        </button>
+        <button id ='updateButton' type="button" v-on:click="changeEmail()"> 
+          <b>Update </b></button>
       </div>
-      <br />
-      <div class="passwordField">
+      <div id = 'inputField' class="passwordField">
         <label for="password"> New Password: </label>
         <input type="text" id="password" placeholder="Enter New Password" />
-        <button id="savebutton" type="button" v-on:click="changePassword()">
-          Change Password
-        </button>
-        <br /><br />
+        <button id ='updateButton' type="button" v-on:click="changePassword()"> 
+          <b>Update </b></button>
       </div>
     </div>
-    <div class="addBrokerField">
+    <div id = 'inputField' class="addBrokerField">
         <label for="addbroker"> Add Broker: </label>
         <input type="text" id="addbroker" placeholder="Enter Broker Name" />
-        <button id="savebutton" type="button" v-on:click="addBroker()">
-          Add Broker
-        </button>
-        <br /><br />
+        <button id ='updateButton' type="button" v-on:click="addBroker()">
+           <b>Update </b></button>
     </div>
-    <div class="details">
+    <div id = 'selectField' class="details">
       <label for="brokers"> Remove Broker: </label>
       <select id="brokers">
         <option hidden>Select Broker:</option>
         <!-- Brokers are dynamically added from Firebase -->
       </select>
-      <button id="savebutton" type="button" v-on:click="removeBroker()">
-        Remove Broker
-      </button>
+      <button id ='updateButton' type="button" v-on:click="removeBroker()">
+         <b>Update </b></button>
     </div>
   </div>
 </template>
@@ -78,11 +65,19 @@ export default {
       if (user) {
         // User is signed in.
         this.user = user;
+        fillInput();
         getBrokers();
       } else {
         // No user is signed in.
       }
     });
+    function fillInput() {
+      const auth = getAuth();
+      const curr = auth.currentUser;
+      document.getElementById("displayName").value = curr.displayName
+      document.getElementById("emailEntry").value = curr.email
+    }
+
     async function getBrokers() {
       const auth = getAuth();
       const curr = auth.currentUser;
@@ -148,20 +143,24 @@ export default {
     async addBroker() {
       var selectedValue = document.getElementById("addbroker").value;
       console.log(this.brokerList);
-      this.brokerList.push(selectedValue)
-      alert("Adding New Broker");
-      console.log(this.brokerList);
-      try {
-        const auth = getAuth();
-        const curr = auth.currentUser;
-        await setDoc(doc(db, curr.uid, "credentials"), {
-              brokers: this.brokerList,
-            });
-        console.log("New brokers set to Firebase:", this.brokerList)
-      } catch (error) {
-        console.error("Error updating details", error);
+      if (selectedValue == "") {
+        alert("invalid Broker!")
+      } else {
+        this.brokerList.push(selectedValue)
+        alert("Adding New Broker");
+        console.log(this.brokerList);
+        try {
+          const auth = getAuth();
+          const curr = auth.currentUser;
+          await setDoc(doc(db, curr.uid, "credentials"), {
+                brokers: this.brokerList,
+              });
+          console.log("New brokers set to Firebase:", this.brokerList)
+        } catch (error) {
+          console.error("Error updating details", error);
+        }
+        setTimeout(this.goToOverview, 1000);
       }
-      this.$router.push("/accountOverview");
     },
     changeName() {
       var name = document.getElementById("displayName").value;
@@ -212,4 +211,43 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+label {
+    padding-right:10px;
+}
+
+#inputField {
+  display:flex;
+  align-items: center;
+  justify-content:right;
+  width: 70%;
+  margin-top: 32px;
+}
+
+#selectField {
+  margin-top: 32px;
+}
+
+
+input{
+  height: 32px;
+  background: #f9f9f9;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  width: 280px;
+  padding: 0 4px;
+}
+
+#updateButton{
+  background: #7FC920;
+  color: #fff;
+  height: 32px;
+  border: 1px solid #303751;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0 16px;
+  margin-left: 10px;
+}
+
+</style>

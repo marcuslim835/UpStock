@@ -1,12 +1,24 @@
 <template>
     <div class="main">
-        <div v-if="user">
-            <div>
-                <p> Name: <strong>{{user.displayName}}</strong><br>
-                    Email: <strong>{{user.email}}</strong><br>
-                    UID: <strong>{{user.uid}}</strong><br>
-                    Sign-In Provider: <strong>{{user.providerId}}</strong> </p>
-            </div>
+        <div class='sub' v-if="user">
+            <table id='accountTable' align='center'>
+                <tr>
+                    <td id = 'left'>Name:</td>
+                    <td id = 'right'><strong>{{user.displayName}}</strong><br></td>
+                </tr>
+                <tr>
+                    <td id = 'left'>Email:</td>
+                    <td id = 'right'><strong>{{user.email}}</strong><br></td>
+                </tr>
+                <tr>
+                    <td id = 'left'>User ID:</td>
+                    <td id = 'right'><strong>{{user.uid}}</strong><br></td>
+                </tr>
+                <tr>
+                    <td id = 'left'>Sign-in Provider:</td>
+                    <td id = 'right'><strong>{{user.providerId}}</strong><br></td>
+                </tr>
+            </table>
         </div>
     </div>
 </template>
@@ -50,5 +62,33 @@ export default {
 </script>
 
 <style scoped>
+.sub {
+    text-align: center;
+}
+
+#accountTable {
+    width: 70%;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+td {
+    border-bottom: 1px solid rgba(255,255,255, 0.5);
+    padding: 15px;
+}
+
+
+
+#left {
+    color: rgba(255,255,255, 0.5);
+    text-align:left
+}
+
+#right {
+    text-align: right;
+    font-family: 'Trebuchet MS';
+}
+
+
 
 </style>
