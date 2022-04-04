@@ -111,7 +111,7 @@ export default {
             console.log('Current user id: ' + curr.uid) //user id
             var ind = 1
             const table = document.getElementById('holdingTable')
-            const getMap = ST.getAllHoldings(curr.uid) 
+            const getMap = ST.getAllHoldings('userID') 
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
@@ -159,7 +159,7 @@ export default {
                                 plCell.style.color = 'red'
                             } else {
                                 plCell.innerHTML = '+ ' + currentPL + ' USD'
-                                plCell.style.color = 'green'
+                                plCell.style.color = '#7FC920'
                             }
                             vm.totalValue = (parseFloat(vm.totalValue) + parseFloat(mktTotal)).toFixed(2)
                             vm.totalPL = (parseFloat(vm.totalPL) + parseFloat(currentPL)).toFixed(2)
@@ -264,15 +264,21 @@ h2 {
 }
 
 #addInvestButton {
-    margin-left:5%;
-    margin-top: 30%;
-    width: 120px;
-    height: 50px;
-    background: #F8F9FA;
-    border: 1px solid rgba(134, 142, 150, 0.3);
-    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 5px;
+    border: none;
+    padding: .425rem 3rem;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
     cursor: pointer;
+    display: inline-block;
+    transition: all .22s;
+    margin-left:5%;
+    margin-top: 20%;
+    background-color: #747ff9;
+    
 }
+
 
 .bwt {
     background:rgb(228, 58, 58);
