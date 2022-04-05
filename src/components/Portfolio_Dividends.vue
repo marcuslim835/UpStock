@@ -39,7 +39,7 @@ export default {
             console.log('Current user id: ' + curr.uid) //user id
             var ind = 1
             const table = document.getElementById('dividendTable')
-            const getMap = ST.getHoldingsQty('userID') 
+            const getMap = ST.getHoldingsQty(curr.uid) 
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
