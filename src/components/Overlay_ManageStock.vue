@@ -46,7 +46,7 @@
 
       <select id="tags">
         <option value="Tech">Tech</option>
-        <option value="Reit">REIT</option>
+        <option value="REIT">REIT</option>
         <option value="Finance">Finance</option>
         <option value="Energy">Energy</option>
         <option value="Healthcare">Healthcare</option>
