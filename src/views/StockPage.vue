@@ -2,7 +2,7 @@
   <Header :content='stockName + " Stock"'/>
   <NavigationBar/>
   <Stock_Graph v-if="stockTicker"  :ticker="stockTicker" />
-  <Stock_KPI :price="price"/>
+  <Stock_KPI v-if="stockTicker"  :ticker="stockTicker" />
   <ForumPost/>
 </template>
 
