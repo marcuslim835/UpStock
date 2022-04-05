@@ -101,7 +101,7 @@ export default {
             console.log('Current user id: ' + curr.uid) //user id
             var ind = 1 //row index
             const table = document.getElementById('homeHoldingTable')
-            const getMap = ST.getAllHoldings(curr.uid) 
+            const getMap = ST.getAllHoldings('userID') 
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
@@ -155,7 +155,7 @@ export default {
                                 pcCell.style.color = 'red'
                             } else {
                                 pcCell.innerHTML = '+ ' + percentC + ' % <br><br>' 
-                                pcCell.style.color = 'green'
+                                pcCell.style.color = '#7FC920'
                             }
                             ind += 1  
                             return [typeHolding,totalWorth]
@@ -209,7 +209,7 @@ export default {
 
 #pie {
     text-align: center;
-    margin-left: 200px;
+    margin-left: 150px;
 }
 
 #pieHeader, #tableHeader, #countHeader {
@@ -224,21 +224,21 @@ export default {
 }
 
 #addInvestButton {
-    width: 120px;
-    height: 30px;
+    width: 160px;
+    height: 40px;
+    text-align: center;
     margin-top: 5%;
     font-size: 12px;
     background: #F8F9FA;
     border: 1px solid rgba(134, 142, 150, 0.3);
     border-radius: 4px;
-    cursor: pointer;
 }
 
 #homeHoldingTable {
+    width: 120px;
     border-collapse: collapse;
     font-size: 16px;
     font-family: Cambria;
-
 }
 #homeHoldingTable th {
     background-color: #212529;
