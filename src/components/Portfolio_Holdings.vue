@@ -113,7 +113,7 @@ export default {
             var ind = 1
             const table = document.getElementById('holdingTable')
 
-            const getMap = ST.getAllHoldings('userID') 
+            const getMap = ST.getAllHoldings(curr.uid) 
 
             getMap.then(x => {
                 if (x == null) {

@@ -53,10 +53,6 @@ export const getHistoricalStockPrice = async (ticker, quantity, range) => {
             }
         });
 
-        if (result.prototype.hasOwnProperty.call('lid')) {
-            delete result['lid'];
-        }
-
         return result;
     } catch (error) {
         console.error(error);
