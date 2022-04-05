@@ -49,6 +49,7 @@ export const getHoldingsQty = async (userID) => {
     try {
         const docRef = doc(db, userID,"holdings") //userID as placeholder for curr.uid
         const docSnap = await getDoc(docRef)
+        console.log(docSnap.data());
         if (docSnap.exists()) {
             const dict =  docSnap.data()
             const keys= Object.keys(dict)

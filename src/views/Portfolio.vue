@@ -4,7 +4,7 @@
   <Portfolio_Holdings/>
   <Header content="Dividends"/>
   <Portfolio_Dividends/>
-  <Header content="PL YTD" />
+  <Header content="Portfolio Value" />
   <Charts />
 </template>
 

@@ -1,7 +1,7 @@
 <template>
-  <Header :content='stockName + " Stocks"'/>
+  <Header :content='stockName + " Stock"'/>
   <NavigationBar/>
-  <Stock_Graph/>
+  <Stock_Graph v-if="stockTicker"  :ticker="stockTicker" />
   <Stock_KPI :price="price"/>
   <ForumPost/>
 </template>
@@ -31,8 +31,12 @@ export default {
   created() {
     const data = API.getStockPrice(this.stockTicker);
     data.then(x => this.price = Object.values(x[0])[0]);
+
+    const test = API.getKeyStatistics(this.stockTicker);
+    console.log(test);
   },
   mounted() {
+    this.loaded = true;
     console.log("Date passed to StockPage: ", this.stockTicker, this.stockName);
   }
 }
