@@ -53,10 +53,6 @@ export const getHistoricalStockPrice = async (ticker, quantity, range) => {
             }
         });
 
-        if (result.prototype.hasOwnProperty.call('lid')) {
-            delete result['lid'];
-        }
-
         return result;
     } catch (error) {
         console.error(error);
@@ -153,13 +149,12 @@ export const getKeyStatistics = async (ticker) => {
             }
 
             result.priceHistory = {
-                weekHigh: data.summaryDetail.fiftyTwoWeekHigh.raw,
-                weekLow: data.summaryDetail.fiftyTwoWeekLow.raw,
-                movingAverage50: data.summaryDetail.fiftyDayAverage.raw,
-                movingAverage200: data.summaryDetail.twoHundredDayAverage
+                high: data.summaryDetail.fiftyTwoWeekHigh.fmt,
+                low: data.summaryDetail.fiftyTwoWeekLow.fmt,
+                movingAverage50: data.summaryDetail.fiftyDayAverage.fmt,
+                movingAverage200: data.summaryDetail.twoHundredDayAverage.fmt
             }
         });
-        console.log(result);
 
         return result;
     } catch (error) {

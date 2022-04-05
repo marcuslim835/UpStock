@@ -19,6 +19,7 @@
     "firestore": "^1.1.6",
     "vue": "^3.0.0",
     "vue-chartkick": "^1.1.0",
+    "vue-info-card": "^0.1.4",
     "vue-router": "^4.0.13",
     "vue-trading-view": "^1.0.1"
   },
