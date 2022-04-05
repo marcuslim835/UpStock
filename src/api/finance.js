@@ -49,7 +49,7 @@ export const getHistoricalStockPrice = async (ticker, quantity, range) => {
             const prices = data.chart.result[0].indicators.quote[0].close;
 
             for (let i = 0; i < 12; i++) {
-                result[new Date(timestamps[i] * 1000).toString().substring(4, 15)] = prices[i] * quantity;
+                result[new Date(timestamps[i] * 1000).toUTCString().substring(4, 17)] = prices[i] * quantity;
             }
         });
 

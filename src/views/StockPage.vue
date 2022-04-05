@@ -3,7 +3,6 @@
   <NavigationBar/>
   <Stock_Graph v-if="stockTicker"  :ticker="stockTicker" />
   <Stock_KPI v-if="stockTicker"  :ticker="stockTicker" />
-  <ForumPost/>
 </template>
 
 <script>
@@ -11,7 +10,6 @@ import Header from "@/components/Header.vue"
 import NavigationBar from "@/components/NavigationBar.vue"
 import Stock_Graph from "@/components/Stock_Graph.vue"
 import Stock_KPI from "@/components/Stock_KPI.vue"
-import ForumPost from "@/components/ForumPost.vue"
 import * as API from '../api/finance.js';
 
 
@@ -22,8 +20,7 @@ export default {
     Header,
     NavigationBar,
     Stock_Graph,
-    Stock_KPI,
-    ForumPost
+    Stock_KPI
   },
   data: () => ({
     price: "",

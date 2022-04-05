@@ -5,6 +5,7 @@
         width="80%"
         prefix="$"
         :data="chartdata"
+        :colors="['#7FC920']"
     />
   </div>
 </template>

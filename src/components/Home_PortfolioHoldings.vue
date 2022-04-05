@@ -143,7 +143,7 @@ export default {
                             buttonCell.style.color = 'white'
                             buttonCell.style.font = '20px'
                             buttonCell.onclick = function() {
-                                goToHolding(ticker)
+                                goToHolding(stockName, ticker)
                             }
                             //Profit/Loss calculation
                             let aggPrice = (sum/tickerQty).toFixed(2) //total sum bought/total qty of ticker
@@ -167,9 +167,14 @@ export default {
             })
         }
 
-        function goToHolding(ticker) {
-            //TODO: go to stock page
-            alert('go to ' + ticker + ' page')
+        function goToHolding(name, ticker) {
+            vm.$router.push({
+                name: "StockPage",
+                params: { 
+                    stockTicker: ticker,
+                    stockName: name
+                },
+            })
         }
     },
 
