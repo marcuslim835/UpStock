@@ -27,7 +27,7 @@ export default {
             if (user) {
                 // User is signed in.
                 this.user = user
-                setTimeout(displayTable, 2000)
+                setTimeout(displayTable, 1500)
             } else {
                 // No user is signed in.
             }
@@ -36,9 +36,10 @@ export default {
         async function displayTable() {
             const auth = getAuth();
             const curr = auth.currentUser;
+            console.log('Current user id: ' + curr.uid) //user id
             var ind = 1
             const table = document.getElementById('dividendTable')
-            const getMap = ST.getHoldingsQty(curr.uid) 
+            const getMap = ST.getHoldingsQty('userID') 
             getMap.then(x => {
                 if (x == null) {
                     console.log('Firebase is empty')
@@ -61,13 +62,13 @@ export default {
                                 paymentCell.innerHTML = 'No dividends';
                                 yieldCell.innerHTML = 'No dividends';
                                 exDivCell.innerHTML = 'No dividends';
-                                paidCell.innerHTML = 0;
+                                paidCell.innerHTML = 0 + ' USD';
                             } else {
                                 rateCell.innerHTML = y['dividendRate'];
                                 paymentCell.innerHTML = y['dividendDate'];
-                                yieldCell.innerHTML = y['dividendYield'];
+                                yieldCell.innerHTML = y['dividendYield'] + ' USD';
                                 exDivCell.innerHTML = y['exDividendDate'];
-                                paidCell.innerHTML = y['dividendYield'] * totalQty;
+                                paidCell.innerHTML = (y['dividendYield'] * totalQty).toFixed(4) + ' USD';
                             }
                     })
                 }
