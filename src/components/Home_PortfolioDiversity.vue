@@ -34,7 +34,7 @@ export default {
             const curr = auth.currentUser;
             let pArr = []
             console.log(curr.uid)
-            let typeMap = ST.getDiversity('userID')
+            let typeMap = ST.getDiversity(curr.uid)
             console.log('loading Pie Chart data')
             typeMap.then(x => {
                 for (const key of x.keys()) { //each type
