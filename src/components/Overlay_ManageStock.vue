@@ -8,7 +8,7 @@
   <div>
     <form id="userForm">
       <select id="brokers">
-        <option hidden>Select Broker:</option>
+        <option disabled="disabled" selected="selected">Select Broker:</option>
 
         <!-- Brokers are dynamically added from Firebase --></select
       ><br /><br />
@@ -18,24 +18,28 @@
         class="textbox"
         id="stockname"
         placeholder="Stock Name"
+        required
       /><br /><br />
       <input
         type="text"
         class="textbox"
         id="ticker"
         placeholder="Ticker (e.g GOOGL)"
+        required
       /><br /><br />
       <input
-        type="text"
+        type="number"
         class="textbox"
         id="quantity"
         placeholder="Quantity"
+        required
       /><br /><br />
       <input
-        type="text"
+        type="number"
         class="textbox"
         id="price"
         placeholder="Price"
+        required
       /><br /><br />
       <input
         type="date"
@@ -151,6 +155,11 @@ export default {
   },
 
   methods: {
+    toggleModal() {
+      document.getElementById("userForm").reset();  
+      this.$emit("cancel");
+      console.log("Cancel button pressed")
+    },
     async saveToFirebase() {
       console.log("Save to Firebase called")
       let stockName = document.getElementById("stockname").value;
@@ -159,6 +168,10 @@ export default {
       let price = document.getElementById("price").value;
       //let purchaseDate = document.getElementById("purchasedate").value;
       let brokerName = document.getElementById("brokers").value;
+      if (brokerName == "Select Broker:") {
+        alert("Please select a broker! Your transaction has been cancelled!");
+        this.toggleModal();
+      }
       let tag = document.getElementById("tags").value;
       console.log("DETAILS CAPTURED FROM FORM");
 
@@ -194,14 +207,6 @@ export default {
         console.error("Error adding document: ", error);
       }
 
-      
-    },
-
-    
-    toggleModal() {
-      document.getElementById("userForm").reset();  
-      this.$emit("cancel");
-      console.log("Cancel button pressed")
     },
     
   },
