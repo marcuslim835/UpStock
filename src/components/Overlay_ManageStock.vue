@@ -163,14 +163,35 @@ export default {
     async saveToFirebase() {
       console.log("Save to Firebase called")
       let stockName = document.getElementById("stockname").value;
+      if (stockName == "") {
+        alert("Please input a stock name! Your transaction has been cancelled!");
+        this.toggleModal();
+        return;
+      }
       let ticker = document.getElementById("ticker").value;
+      if (ticker == "") {
+        alert("Please input a ticker! Your transaction has been cancelled!");
+        this.toggleModal();
+        return;
+      }
       let qty = document.getElementById("quantity").value;
+      if (qty == "") {
+        alert("Please input the quantity! Your transaction has been cancelled!");
+        this.toggleModal();
+        return;
+      }
       let price = document.getElementById("price").value;
+      if (price == "") {
+        alert("Please input a price! Your transaction has been cancelled!");
+        this.toggleModal();
+        return;
+      }
       //let purchaseDate = document.getElementById("purchasedate").value;
       let brokerName = document.getElementById("brokers").value;
       if (brokerName == "Select Broker:") {
         alert("Please select a broker! Your transaction has been cancelled!");
         this.toggleModal();
+        return;
       }
       let tag = document.getElementById("tags").value;
       console.log("DETAILS CAPTURED FROM FORM");
