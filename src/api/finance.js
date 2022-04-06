@@ -26,7 +26,7 @@ export const getStockPrice = async (ticker) => { // can be used for multiple sto
         console.log(result);
         return result; // returns an array of objects
     } catch (error) {
-        console.error(error);
+        console.error("Get stock price: ", error);
     }
 }
 
@@ -77,7 +77,7 @@ export const getHistoricalValue = async (tickers, range) => { // tickers is json
 
         return result;
     } catch (error) {
-        console.error(error);
+        console.error("Historical Value: ", error);
     }
 }
 
@@ -107,7 +107,15 @@ export const getDividendInformation = async (ticker) => { // only a single stock
 
         return result; // returns an object with important dividend information
     } catch (error) {
-        console.error(error);
+        console.error("Dividends: ", error);
+        let result = [];
+        result = {
+            dividendRate: "API Key Monthly Limit Reached",
+            dividendYield: "NA",
+            dividendDate: "API Key Monthly Limit Reached",
+            exDividendDate: "API Key Monthly Limit Reached",
+        };
+        return result;
     }
 }
 
@@ -158,6 +166,6 @@ export const getKeyStatistics = async (ticker) => {
 
         return result;
     } catch (error) {
-        console.error(error);
+        console.error("Key Stats: ", error);
     }
 }
