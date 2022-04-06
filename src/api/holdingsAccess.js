@@ -1,6 +1,6 @@
 import firebaseApp from './firebaseAccessor.js'
 import {deleteField, getFirestore, setDoc, updateDoc} from 'firebase/firestore'
-import { getDoc, doc } from 'firebase/firestore';
+import { getDoc, doc, addDoc, collection } from 'firebase/firestore';
 const db = getFirestore(firebaseApp);
 
 //INDEX ACCESS TO MAP
@@ -105,6 +105,14 @@ export const updateAggPrice = async (userID,ticker) => {
 export const addData = async (userID, ticker, stockName, brokerName, price, quantity, tag) => {
     try {
         const docRef = doc(db, userID, "holdings");
+        const docRef2 = await addDoc(collection(db,userID, "transactions", "history"), {
+            Broker: brokerName,
+            Date: Date.now()/1000,
+            Price: price,
+            Qty: quantity,
+            Ticker: ticker
+        })
+        console.log(docRef2)
         const docSnapshot = await getDoc(docRef);
         if (!docSnapshot.exists()) {
             const nDoc = await setDoc(docRef, {[ticker]: {broker: {[brokerName]: {qty: quantity, price: price}}, name: stockName, type: tag}});
@@ -147,10 +155,18 @@ export const addData = async (userID, ticker, stockName, brokerName, price, quan
     }
 }
 
-export const delData = async (userID, ticker, brokerName) => {
+export const delData = async (userID, ticker, brokerName, quantity) => {
     try {
         var docRef = doc(db, userID, "holdings")
         const docSnap = await getDoc(docRef)
+        const docRef2 = await addDoc(collection(db,userID, "transactions", "history"), {
+            Broker: brokerName,
+            Date: Date.now()/1000,
+            Price: "sold",
+            Qty: quantity,
+            Ticker: ticker
+        })
+        console.log(docRef2)
 
         if (docSnap.exists()) {
             const dict = docSnap.data()

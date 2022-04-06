@@ -68,7 +68,7 @@ export default {
                 const auth = getAuth();
                 const currUser = auth.currentUser;
                 console.log(typeof currUser.uid)
-                await ST.delData(currUser.uid, this.sellData.ticker, this.sellData.broker);
+                await ST.delData(currUser.uid, this.sellData.ticker, this.sellData.broker, this.sellData.quantity);
                 console.log("DELETE ENTRY AFTER AWAIT")
                 this.$emit("deleted")
             }

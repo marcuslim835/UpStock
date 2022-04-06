@@ -2,7 +2,7 @@
   <Header content="Home"/>
   <NavigationBar/>
   <PLChart/> 
-  <Home_PortfolioHoldings/> <br> <br> <br>
+  <Home_PortfolioHoldings/>
   <Home_History/>
 </template>
 
