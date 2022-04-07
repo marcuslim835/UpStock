@@ -65,11 +65,9 @@ export default {
 .navBar::-webkit-scrollbar {
   width: 10px;               /* width of the entire scrollbar */
 }
-
 .navBar::-webkit-scrollbar-track {
   background: gray;        /* color of the tracking area */
 }
-
 .navBar::-webkit-scrollbar-thumb {
   background-color: lightgray;    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
