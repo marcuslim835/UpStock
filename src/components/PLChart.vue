@@ -1,5 +1,6 @@
 <template>
   <div id="graph">
+    <h2 class = 'miniHeader'> Portfolio value </h2>
     <line-chart
         v-if="loaded"
         width="80%"
@@ -14,6 +15,7 @@
 import * as API from '../api/finance.js';
 import * as DB from '../api/holdingsAccess.js';
 import { getAuth, onAuthStateChanged} from "firebase/auth";
+
 
 export default {
   name:'Charts',
@@ -45,5 +47,13 @@ export default {
   #graph {
     margin-left: 320px;
     margin-top : 40px;
+    width:50%;
+    float : left;
   }
+
+  .miniHeader {
+    font-family: monospace;
+    font-size: 18px;
+    color: aliceblue;
+}
 </style>

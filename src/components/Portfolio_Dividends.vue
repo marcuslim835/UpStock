@@ -1,17 +1,18 @@
 <template>
     <div class="main">
-        
-        <table id = 'dividendTable'>
-            <tr>
-                <th>Name</th>
-                <th>Payment Date</th>
-                <th>Dividend Rate (%)</th>
-                <th>Dividend Yield</th>
-                <th>Registered Holdings</th>
-                <th>Book Closure</th>
-                <th>Expected Payment</th>
-            </tr>
-        </table><br><br>
+        <div class = 'tableDiv'>
+            <table id = 'dividendTable'>
+                <tr>
+                    <th>Name</th>
+                    <th>Payment Date</th>
+                    <th>Dividend Rate (%)</th>
+                    <th>Dividend Yield</th>
+                    <th>Registered Holdings</th>
+                    <th>Book Closure</th>
+                    <th>Expected Payment</th>
+                </tr>
+            </table><br><br>
+        </div>
     </div>
 </template>
 
@@ -93,6 +94,15 @@ export default {
 </script>
 
 <style>
+.tableDiv {
+    width:100%;
+    overflow-y:scroll;
+    height:250px
+}
+.tableDiv::-webkit-scrollbar {
+  display: none;
+}
+
 #dividendTable {
     width: 100%;  
     height:10px;
