@@ -30,7 +30,7 @@
     <div id = 'selectField' class="details">
       <label for="brokers"> Remove Broker: </label>
       <select id="brokers">
-        <option hidden>Select Broker:</option>
+        <option disabled="disabled" selected="selected">Select Broker:</option>
         <!-- Brokers are dynamically added from Firebase -->
       </select>
       <button id ='updateButton' type="button" v-on:click="removeBroker()">
@@ -123,10 +123,14 @@ export default {
     async removeBroker() {
       var select = document.getElementById("brokers");
       var selectedValue = select.value;
+      if (selectedValue == "Select Broker:") {
+        alert("Please select a broker! Your transaction has been cancelled!");
+        return;
+      }
       console.log(selectedValue);
       let index = this.brokerList.indexOf(selectedValue);
       this.brokerList.splice(index, 1)
-      alert("Deleting Broker");
+      alert("Deleting Broker: " + selectedValue);
       console.log(this.brokerList);
       try {
         const auth = getAuth();
@@ -144,10 +148,11 @@ export default {
       var selectedValue = document.getElementById("addbroker").value;
       console.log(this.brokerList);
       if (selectedValue == "") {
-        alert("invalid Broker!")
+        alert("Please input a broker! Your transaction has been cancelled!")
+        return;
       } else {
         this.brokerList.push(selectedValue)
-        alert("Adding New Broker");
+        alert("Adding New Broker: " + selectedValue);
         console.log(this.brokerList);
         try {
           const auth = getAuth();
@@ -164,12 +169,16 @@ export default {
     },
     changeName() {
       var name = document.getElementById("displayName").value;
+      if (name == "") {
+        alert("Please input a name! Your transaction has been cancelled!");
+        return;
+      }
       //console.log(name);
       const auth = getAuth();
       updateProfile(auth.currentUser, { displayName: name })
         .then(() => {
           console.log("CHANGED DISPLAY NAME");
-          alert("Display Name Updated!");
+          alert("Your Display Name has been updated to: " + name);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -180,6 +189,10 @@ export default {
     changeEmail() {
       var email = document.getElementById("emailEntry").value;
       //console.log(email);
+      if (email == "") {
+        alert("Please input an email! Your transaction has been cancelled!");
+        return;
+      }
       const auth = getAuth();
       updateEmail(auth.currentUser, email)
         .then(() => {
@@ -194,6 +207,10 @@ export default {
     },
     changePassword() {
       var password = document.getElementById("password").value;
+      if (password == "") {
+        alert("Please input a password! Your transaction has been cancelled!");
+        return;
+      }
       //console.log(password);
       const auth = getAuth();
       updatePassword(auth.currentUser, password)
@@ -225,11 +242,15 @@ label {
 }
 
 #selectField {
+  display:flex;
+  align-items: center;
+  justify-content:right;
+  width: 70%;
   margin-top: 32px;
 }
 
 
-input{
+input, select{
   height: 32px;
   background: #f9f9f9;
   border-top: 1px solid #ccc;
