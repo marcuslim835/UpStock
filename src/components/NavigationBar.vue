@@ -67,13 +67,23 @@ export default {
 }
 
 .navBar::-webkit-scrollbar-track {
-  background: aliceblue;        /* color of the tracking area */
+  background: gray;        /* color of the tracking area */
 }
 
 .navBar::-webkit-scrollbar-thumb {
-  background-color: gray;    /* color of the scroll thumb */
+  background-color: lightgray;    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
-  border: 3px solid gray;  /* creates padding around scroll thumb */
+  border: 3px solid lightgray;  /* creates padding around scroll thumb */
+}
+.navBar::-webkit-scrollbar-thumb:hover {
+  background-color: aliceblue;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid aliceblue;  /* creates padding around scroll thumb */
+}
+.navBar::-webkit-scrollbar-thumb:active {
+  background-color: lightgray;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid aliceblue;  /* creates padding around scroll thumb */
 }
 
 .navBar a,
