@@ -3,34 +3,36 @@
         <div class = 'sect'>
             <div>
                 <div class = 'top'>     
-                    <h2 id = 'tableHeader' align="left">Portfolio</h2>
+                    <h2 class = 'miniHeader' align="left">Portfolio</h2>
                 </div>
                 <div class = 'top'>     
-                    <h2 id = 'countHeader' align="left">Number of Holdings: {{holdingsCount}}</h2>
+                    <h2 class = 'miniHeader' align="left">Number of Holdings: {{holdingsCount}}</h2>
                 </div>
                 <div class = 'top'>     
                     <button id ='addInvestButton' type="button" @click="toggleModal()">
                         <b>+ Add investment</b></button>
                 </div>
             </div>
-            <table id = 'homeHoldingTable'> 
-                <tr>
-                    <th>Name|Ticker</th>
-                    <th>Type</th>
-                    <th>Current</th>
-                    <th>Quantity</th>
-                    <th>Total Worth</th>
-                    <th>% Change</th>
-                    <th></th>
-                </tr>
-            </table>
+            <div class = 'tableDiv'>
+                <table id = 'homeHoldingTable'> 
+                    <tr>
+                        <th>Name|Ticker</th>
+                        <th>Type</th>
+                        <th>Current</th>
+                        <th>Quantity</th>
+                        <th>Total Worth</th>
+                        <th>% Change</th>
+                        <th></th>
+                    </tr>
+                </table>
+            </div>
         <Modal :modalActive="modalActive">
             <OMS @cancel="() => toggleModal()"/>
         </Modal>
         </div>
-        <div class = 'sect' id = 'pie'>
-        <h2 id = 'pieHeader'> Portfolio Diversity</h2>
-        <CChart v-if='hasData' id = 'pieChart' type="doughnut" style="width: 280px"
+        <div class = 'sect2' id = 'pie'>
+        <h2 class = 'miniHeader'> Portfolio Diversity</h2>
+        <CChart v-if='hasData' id = 'pieChart' type="doughnut" 
         :data="{
             labels: labelData,
             datasets: [{
@@ -177,6 +179,7 @@ export default {
             })
         }
     },
+    
 
     beforeUnmount() {
         function reinitTable() {
@@ -205,6 +208,13 @@ export default {
 <style scoped>
 .sect {
     float: left;
+    width: 70%
+}
+
+.sect2 {
+    float: left;
+    width: 30%;
+    text-align: center;
 }
 
 .top {
@@ -212,12 +222,7 @@ export default {
     width: 240px;
 }
 
-#pie {
-    text-align: center;
-    margin-left: 150px;
-}
-
-#pieHeader, #tableHeader, #countHeader {
+.miniHeader {
     font-family: monospace;
     font-size: 18px;
     color: aliceblue;
@@ -251,8 +256,15 @@ export default {
 }
 
 
+.tableDiv {
+    width:100%;
+    overflow-y:scroll;
+    height:250px
+}
 
-
+.tableDiv::-webkit-scrollbar {
+  display: none;
+}
 
 
 </style>

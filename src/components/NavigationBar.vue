@@ -61,6 +61,21 @@ export default {
   overflow-x: hidden;
   border-right: 1px solid white;
 }
+
+.navBar::-webkit-scrollbar {
+  width: 10px;               /* width of the entire scrollbar */
+}
+
+.navBar::-webkit-scrollbar-track {
+  background: aliceblue;        /* color of the tracking area */
+}
+
+.navBar::-webkit-scrollbar-thumb {
+  background-color: gray;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid gray;  /* creates padding around scroll thumb */
+}
+
 .navBar a,
 button {
   padding: 20px 20px 20px 20px;

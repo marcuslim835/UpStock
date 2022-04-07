@@ -1,9 +1,9 @@
 <template>
   <Header content="Home"/>
-  <NavigationBar/>
-  <PLChart/> 
-  <Home_PortfolioHoldings/>
+  <PLChart/>
   <Home_History/>
+  <NavigationBar/>
+  <Home_PortfolioHoldings/>
 </template>
 
 <script>
@@ -26,5 +26,9 @@ export default {
 </script>
 
 <style scoped>
-
+.miniHeader {
+    font-family: monospace;
+    font-size: 18px;
+    color: aliceblue;
+}
 </style>

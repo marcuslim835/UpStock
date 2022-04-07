@@ -233,12 +233,22 @@ export default {
 </script>
 
 <style>
+.tableDiv {
+    width:100%;
+    overflow-y:scroll;
+    height:250px
+}
+
+.tableDiv::-webkit-scrollbar {
+  display: none;
+}
 #holdingTable {
     width: 100%;  
     height:10px;
     border: 1px solid white; 
     border-collapse: collapse;
     font-size: 20px;
+    overflow-y:scroll
 }
 
 #holdingTable th {

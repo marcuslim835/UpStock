@@ -1,15 +1,18 @@
 <template>
-    <h1 v-if="user"> Transaction History </h1>
-    <table id = 'table' class = "auto-index">
-        <tr>
-            <th> Transaction No. </th>
-            <th> Date </th>
-            <th> Price </th>
-            <th> Quantity </th>
-            <th> Ticker </th>
-            <th> Broker </th>
-        </tr>
-    </table><br><br>
+    <div class = 'main'>
+        <div class = 'wrapper'>
+            <h2 class = 'miniHeader' v-if="user"> History</h2>
+            <div class = 'tableDiv'>
+                <table id = 'table' class = "auto-index"> 
+                    <tr>
+                        <th> index </th>
+                        <th> Date </th>
+                        <th> Transaction </th>
+                    </tr>
+                </table><br><br>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -42,7 +45,6 @@ export default {
             const auth = getAuth();
             const curr = auth.currentUser;
             const docSnap = await getDocs(collection(db, curr.uid, "transactions", "history"));
-
             let ind = 1
             docSnap.forEach((docs) => {
                 let a = docs.data()
@@ -59,18 +61,20 @@ export default {
 
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-                var cell4 = row.insertCell(3);
-                var cell5 = row.insertCell(4);
-                var cell6 = row.insertCell(5);
-
+                var cell3 = row.insertCell(2)
                 cell1.innerHTML = ind;
                 cell2.innerHTML = readable;
-                cell3.innerHTML = price;
-                cell4.innerHTML = qty;
-                cell5.innerHTML = ticker;
-                cell6.innerHTML = broker;
 
+                var xx = ' shares of '
+                if (qty == 1) {
+                    xx = ' share of '
+                }
+                if (price == 'sold') {
+                    var str = 'Removed ' + qty + xx + ticker + ' from ' + broker + '!'
+                } else {
+                    str = 'Added ' + qty + xx + ticker + ' at USD ' + price + ' from ' + broker + '!'
+                }
+                cell3.innerHTML = str;
                 ind += 1;
             }) 
             sortTable();
@@ -99,7 +103,7 @@ export default {
                     console.log(x)
                     console.log(y)
                     // Check if the two rows should switch place:
-                    if (x.innerHTML > y.innerHTML) {
+                    if (x.innerHTML < y.innerHTML) {
                         // If so, mark as a switch and break the loop:
                         shouldSwitch = true;
                         var temp = rows[i + 1].cells[0].innerHTML;
@@ -115,6 +119,7 @@ export default {
                     switching = true;
                 }
             }
+        
         }
         display();
     
@@ -124,7 +129,31 @@ export default {
 </script>
 
 <style scoped>
-#table {
-    padding-left: 300px;
+.wrapper {
+    float: left;
+    width: 35%;
+    margin-top: 40px;
 }
+
+#table {
+    font-size: 14px;
+}
+
+.tableDiv {
+    width:100%;
+    overflow-y:scroll;
+    height:250px
+}
+.tableDiv::-webkit-scrollbar {
+  display: none;
+}
+
+.miniHeader {
+    font-family: monospace;
+    font-size: 18px;
+    color: aliceblue;
+}
+
+
+
 </style>
