@@ -162,6 +162,14 @@ export default {
     },
     async saveToFirebase() {
       console.log("Save to Firebase called")
+
+      let brokerName = document.getElementById("brokers").value;
+      if (brokerName == "Select Broker:") {
+        alert("Please select a broker! Your transaction has been cancelled!");
+        this.toggleModal();
+        return;
+      }
+
       let stockName = document.getElementById("stockname").value;
       if (stockName == "") {
         alert("Please input a stock name! Your transaction has been cancelled!");
@@ -186,15 +194,27 @@ export default {
         this.toggleModal();
         return;
       }
-      //let purchaseDate = document.getElementById("purchasedate").value;
-      let brokerName = document.getElementById("brokers").value;
-      if (brokerName == "Select Broker:") {
-        alert("Please select a broker! Your transaction has been cancelled!");
+
+      let purchaseDate = document.getElementById("purchasedate").value;
+      if (purchaseDate == "" ) {
+        alert("Please select a date! Your transaction has been cancelled!");
         this.toggleModal();
         return;
+      } else {
+        let newDate = new Date(purchaseDate)
+        purchaseDate = newDate.getTime()
+        if (newDate.getTime() - 86400000 > Date.now()) {
+          alert("Please select a valid date! Your transaction has been cancelled!");
+          this.toggleModal();
+          return;
+        }
       }
+      
+
       let tag = document.getElementById("tags").value;
       console.log("DETAILS CAPTURED FROM FORM");
+
+      
 
       try {
         const auth = getAuth();
@@ -209,7 +229,8 @@ export default {
           brokerName,
           price,
           qty,
-          tag
+          tag,
+          purchaseDate
         );
         console.log("AFTER ADD DATA");
         document.getElementById("userForm").reset();
