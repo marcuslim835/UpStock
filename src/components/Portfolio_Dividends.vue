@@ -65,10 +65,12 @@ export default {
                                 exDivCell.innerHTML = 'No dividends';
                                 paidCell.innerHTML = 0 + ' USD';
                             } else {
+                                let date1 = new Date(y['dividendDate'])
+                                let date2 = new Date(y['exDividendDate'])
                                 rateCell.innerHTML = y['dividendRate'];
-                                paymentCell.innerHTML = y['dividendDate'];
+                                paymentCell.innerHTML = date1.toDateString().slice(4,);
                                 yieldCell.innerHTML = y['dividendYield'] + ' USD';
-                                exDivCell.innerHTML = y['exDividendDate'];
+                                exDivCell.innerHTML = date2.toDateString().slice(4,);
                                 paidCell.innerHTML = (y['dividendYield'] * totalQty).toFixed(4) + ' USD';
                             }
                     })
