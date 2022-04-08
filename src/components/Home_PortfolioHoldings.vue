@@ -31,7 +31,7 @@
         </Modal>
         </div>
         <div class = 'sect2' id = 'pie'>
-        <h2 class = 'miniHeader'> Portfolio Diversity</h2>
+        <h2 class = 'miniHeader' id = 'pieHeader'> Portfolio Diversity</h2>
         <CChart v-if='hasData' id = 'pieChart' type="doughnut" 
         :data="{
             labels: labelData,
@@ -141,12 +141,16 @@ export default {
                             totalCell.innerHTML = '$' + totalWorth + '<br><br>'
 
                             //creating arrow button
-                            buttonCell.innerHTML =  '>> <br><br>'
-                            buttonCell.style.color = 'white'
-                            buttonCell.style.font = '20px'
-                            buttonCell.onclick = function() {
+                            var bu = document.createElement('button')
+                            bu.className = 'bwt'
+                            bu.id  = String(stockName)
+                            bu.innerHTML = '<b>Go to<b>' 
+                            bu.style.marginBottom = '20px'
+                            bu.onclick = function() {
                                 goToHolding(stockName, ticker)
                             }
+                            buttonCell.append(bu)
+
                             //Profit/Loss calculation
                             let aggPrice = (sum/tickerQty).toFixed(2) //total sum bought/total qty of ticker
                             let currentPL = (-parseFloat(aggPrice) + parseFloat(mktPrice))
@@ -228,6 +232,10 @@ export default {
     color: aliceblue;
 }
 
+#pieHeader {
+    font-size: 24px;
+}
+
 #alternateHeader {
     font-size:13px;
     color: #C4C9D5
@@ -265,6 +273,7 @@ export default {
 .tableDiv::-webkit-scrollbar {
   display: none;
 }
+
 
 
 </style>
