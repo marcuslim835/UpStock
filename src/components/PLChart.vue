@@ -53,7 +53,7 @@ export default {
 
   .miniHeader {
     font-family: monospace;
-    font-size: 18px;
+    font-size: 24px;
     color: aliceblue;
 }
 </style>

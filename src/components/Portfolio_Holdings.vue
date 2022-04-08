@@ -293,10 +293,10 @@ h2 {
     
 }
 
-
 .bwt {
-    background:rgb(228, 58, 58);
+    background:rgb(5, 226, 247);
+    border-radius: 6px;
+    border: none;
 }
-
 
 </style>

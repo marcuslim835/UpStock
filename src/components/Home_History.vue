@@ -53,6 +53,7 @@ export default {
 
                 var date = (a.Date)
                 var dateobj = new Date(date * 1000)
+                console.log(dateobj)
                 var readable = dateobj.toLocaleString()
                 var price = (a.Price)
                 var qty = (a.Qty)
@@ -100,10 +101,10 @@ export default {
                     one from current row and one from the next: */
                     x = rows[i].cells[1];
                     y = rows[i + 1].cells[1];
-                    console.log(x)
-                    console.log(y)
+                    let x1 = new Date(x.innerHTML).getTime()
+                    let y1 = new Date(y.innerHTML).getTime()
                     // Check if the two rows should switch place:
-                    if (x.innerHTML < y.innerHTML) {
+                    if (y1 > x1) {
                         // If so, mark as a switch and break the loop:
                         shouldSwitch = true;
                         var temp = rows[i + 1].cells[0].innerHTML;
@@ -150,7 +151,7 @@ export default {
 
 .miniHeader {
     font-family: monospace;
-    font-size: 18px;
+    font-size: 24px;
     color: aliceblue;
 }
 
