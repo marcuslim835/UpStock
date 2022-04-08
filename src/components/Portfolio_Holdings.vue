@@ -109,11 +109,8 @@ export default {
         async function displayTable() {
             const auth = getAuth();
             const curr = auth.currentUser;
-            console.log('Current user id: ' + curr.uid) //user id
-
             var ind = 1
             const table = document.getElementById('holdingTable')
-
             const getMap = ST.getAllHoldings(curr.uid) 
 
             getMap.then(x => {
@@ -142,17 +139,25 @@ export default {
                             var qtyCell = row.insertCell(4); var priceCell = row.insertCell(5); 
                             var currentCell = row.insertCell(6); var plCell = row.insertCell(7); 
                             var buttonCell = row.insertCell(8);
-                            nameCell.innerHTML = stockName, tickerCell.innerHTML = ticker, brokerCell.innerHTML = broker; 
+
+                            
+                            nameCell.innerHTML = '<a>' + stockName +'</a>',
+                            nameCell.style.color = 'aqua'
+                            nameCell.onclick = function() {
+                                goToHolding(stockName, ticker)
+                            }
+                            tickerCell.innerHTML = ticker, brokerCell.innerHTML = broker; 
                             qtyCell.innerHTML = quantity; priceCell.innerHTML = price + ' USD';
                             currentCell.innerHTML = mktPrice + ' USD'
                             dateCell.innerHTML = new Date(date).toDateString().slice(4,)
+
                             //creating sell button
                             var bu = document.createElement('button')
                             bu.className = 'bwt'
                             bu.id  = String(stockName)
                             bu.innerHTML = 'Sell'
                             bu.style.background = 'red'
-                            bu.style.color = 'white'
+                            bu.style.color = 'aliceblue'
                             
                         
                             //Profit/Loss calculation
@@ -176,6 +181,15 @@ export default {
                 }
                 }
                 
+            })
+        }
+        function goToHolding(name, ticker) {
+            vm.$router.push({
+                name: "StockPage",
+                params: { 
+                    stockTicker: ticker,
+                    stockName: name
+                },
             })
         }
     },
@@ -297,6 +311,18 @@ h2 {
     background:rgb(5, 226, 247);
     border-radius: 6px;
     border: none;
+}
+
+a:visited {
+  color: rgb(5, 226, 247);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: rgb(19, 124, 237);
+  background-color: transparent;
+  text-decoration: underline;
 }
 
 </style>
