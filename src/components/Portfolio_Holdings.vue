@@ -19,6 +19,7 @@
                 <th>Name</th>
                 <th>Ticker</th>
                 <th>Broker</th>
+                <th>Date</th>
                 <th>Quantity</th>
                 <th>Unit Cost</th>
                 <th>Market Price</th> 
@@ -135,15 +136,16 @@ export default {
                             let broker = brokerName
                             let quantity = parseInt(map[ST.STOCK_QTY])
                             let price = parseInt(map[ST.STOCK_PRICE])
-
+                            let date = parseInt(map[ST.STOCK_DATE])
                             var nameCell = row.insertCell(0); var tickerCell = row.insertCell(1); 
-                            var brokerCell = row.insertCell(2); var qtyCell = row.insertCell(3); 
-                            var priceCell = row.insertCell(4); var currentCell = row.insertCell(5);
-                            var plCell = row.insertCell(6); var buttonCell = row.insertCell(7);
+                            var brokerCell = row.insertCell(2); var dateCell = row.insertCell(3);
+                            var qtyCell = row.insertCell(4); var priceCell = row.insertCell(5); 
+                            var currentCell = row.insertCell(6); var plCell = row.insertCell(7); 
+                            var buttonCell = row.insertCell(8);
                             nameCell.innerHTML = stockName, tickerCell.innerHTML = ticker, brokerCell.innerHTML = broker; 
                             qtyCell.innerHTML = quantity; priceCell.innerHTML = price + ' USD';
                             currentCell.innerHTML = mktPrice + ' USD'
-
+                            dateCell.innerHTML = new Date(date).toDateString().slice(4,)
                             //creating sell button
                             var bu = document.createElement('button')
                             bu.className = 'bwt'
@@ -244,7 +246,6 @@ export default {
 }
 #holdingTable {
     width: 100%;  
-    height:10px;
     border: 1px solid white; 
     border-collapse: collapse;
     font-size: 20px;
