@@ -1,4 +1,8 @@
-- name: Create env file
+name: Create env file
+'on':
+  push:
+    branches:
+      - master
     run: |
       touch .env
       echo VUE_APP_FINANCE_API_KEY=${{ secrets.VUE_APP_FINANCE_API_KEY }} >> .env
