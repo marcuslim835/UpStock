@@ -183,20 +183,20 @@ export default {
         return;
       }
       let qty = document.getElementById("quantity").value;
-      if (qty == "") {
-        alert("Please input the quantity! Your transaction has been cancelled!");
+      if (qty == "" || qty <= 0) {
+        alert("Please input a valid quantity! Your transaction has been cancelled!");
         this.toggleModal();
         return;
       }
       let price = document.getElementById("price").value;
-      if (price == "") {
-        alert("Please input a price! Your transaction has been cancelled!");
+      if (price == "" || price <= 0) {
+        alert("Please input a valid price! Your transaction has been cancelled!");
         this.toggleModal();
         return;
       }
 
       let purchaseDate = document.getElementById("purchasedate").value;
-      if (purchaseDate == "" ) {
+      if (purchaseDate == "") {
         alert("Please select a date! Your transaction has been cancelled!");
         this.toggleModal();
         return;

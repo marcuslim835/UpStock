@@ -83,7 +83,7 @@ export default {
     beforeUnmount() {
         function reinitTable() {
             console.log('Reinitialise Table')
-            let tb = document.getElementById('holdingTable')
+            let tb = document.getElementById('dividendTable')
             while (tb.rows.length > 1) {
                 tb.deleteRow(1)
             }

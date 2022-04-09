@@ -3,8 +3,6 @@
     <h2 id="username">{{ user.displayName }}</h2>
     <h3 id="email">{{ user.email }}</h3>
     <hr />
-    <h3 id="email">NET WORTH <span id="username"> $420,000 </span></h3>
-    <hr />
     <router-link to="/home">Home</router-link>
     <router-link to="/news">News</router-link>
     <router-link to="/portfolio">Portfolio</router-link>
