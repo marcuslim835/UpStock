@@ -5,13 +5,13 @@ name: Create env file
       - master
     run: |
       touch .env
-      echo VUE_APP_FINANCE_API_KEY=${{ secrets.VUE_APP_FINANCE_API_KEY }} > .env
-      echo VUE_APP_FIREBASE_API_KEY=${{ secrets.VUE_APP_FIREBASE_API_KEY }} > .env
-      echo VUE_APP_FIREBASE_APP_ID=${{ secrets.VUE_APP_FIREBASE_APP_ID }} > .env
-      echo VUE_APP_FIREBASE_AUTH_DOMAIN=${{ secrets.VUE_APP_FIREBASE_AUTH_DOMAIN }} > .env
-      echo VUE_APP_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VUE_APP_FIREBASE_MESSAGING_SENDER_ID }} > .env
-      echo VUE_APP_FIREBASE_PROJECT_ID=${{ secrets.VUE_APP_FIREBASE_PROJECT_ID }} > .env
-      echo VUE_APP_FIREBASE_STORAGE_BUCKET=${{ secrets.VUE_APP_FIREBASE_STORAGE_BUCKET }} > .env
-      echo VUE_APP_NEWS_API_KEY=${{ secrets.VUE_APP_NEWS_API_KEY }} > .env
-      echo VUE_APP_RAPID_STOCK_API_KEY=${{ secrets.VUE_APP_RAPID_STOCK_API_KEY }} > .env
+      echo VUE_APP_FINANCE_API_KEY=${{ secrets.VUE_APP_FINANCE_API_KEY }} >> .env
+      echo VUE_APP_FIREBASE_API_KEY=${{ secrets.VUE_APP_FIREBASE_API_KEY }} >> .env
+      echo VUE_APP_FIREBASE_APP_ID=${{ secrets.VUE_APP_FIREBASE_APP_ID }} >> .env
+      echo VUE_APP_FIREBASE_AUTH_DOMAIN=${{ secrets.VUE_APP_FIREBASE_AUTH_DOMAIN }} >> .env
+      echo VUE_APP_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VUE_APP_FIREBASE_MESSAGING_SENDER_ID }} >> .env
+      echo VUE_APP_FIREBASE_PROJECT_ID=${{ secrets.VUE_APP_FIREBASE_PROJECT_ID }} >> .env
+      echo VUE_APP_FIREBASE_STORAGE_BUCKET=${{ secrets.VUE_APP_FIREBASE_STORAGE_BUCKET }} >> .env
+      echo VUE_APP_NEWS_API_KEY=${{ secrets.VUE_APP_NEWS_API_KEY }} >> .env
+      echo VUE_APP_RAPID_STOCK_API_KEY=${{ secrets.VUE_APP_RAPID_STOCK_API_KEY }} >> .env
       cat .env
