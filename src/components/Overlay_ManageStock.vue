@@ -161,7 +161,7 @@ export default {
       console.log("Cancel button pressed")
     },
     async saveToFirebase() {
-      console.log("Save to Firebase called")
+      console.log("Save to firebase called")
 
       let brokerName = document.getElementById("brokers").value;
       if (brokerName == "Select Broker:") {
