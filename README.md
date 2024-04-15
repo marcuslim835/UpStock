@@ -1,6 +1,12 @@
 # UpStock
 ![logo](https://user-images.githubusercontent.com/77620616/160535497-b3d104d7-99c0-41a3-83f2-c35d4f71b7cb.jpg)
 
+Currently, there are a lack of applications that allow investors to collate all their stock holdings from different platforms, resulting in the cumbersome task of repeatedly having to access their different brokerage accounts in order to keep track of their portfolio. This application aims to provide users with a one-stop centralised platform to store all their portfolio holdings, synchronised with real-time data and added features.
+
+### Portfolio 
+![image](https://user-images.githubusercontent.com/77261306/162608125-1f4f9f99-b522-442a-929f-0c5ecb99a147.png)
+
+
 ## Project Setup
 To install modules specified in package.json, run the following in the root folder.
 ```
